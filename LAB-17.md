@@ -25,7 +25,6 @@
 * use the `body-parser` express middleware to on `POST` and `PUT` routes
 * use the npm `debug` module to log the functions being executed in your app
 * using the express `Router` create routes for doing **RESTFUL CRUD** operations on your _resource_
- * store all objects created on the in memory `storage` module we created in lecture
 
 ## Server Endpoints
 ### `/api/resource-name`
