@@ -21,7 +21,7 @@
 * Craeate a Bearer Auth middleware parsers
 * Create an _resource_ that has at least three propertys
  * must have a property `userID` that references the `_id` of the user that created the _resource_
- * the `userId` property can only be set from an `_id` found using the _Bearer Auth Middleware_
+ * the `userID` property can only be set from an `_id` found using the _Bearer Auth Middleware_
 * use the `body-parser` express middleware to on `POST` and `PUT` routes
 * use the npm `debug` module to log the functions being executed in your app
 * using the express `Router` create routes for doing **RESTFUL CRUD** operations on your _resource_
