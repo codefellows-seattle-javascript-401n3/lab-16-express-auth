@@ -17,7 +17,7 @@
  * start - to start the server
 
 # Directions
-* Using the same repository from lab 18
+* Using the same repository from lab 16
 * Craeate a Bearer Auth middleware parsers
 * Create an _resource_ that has at least three propertys
  * must have a property `userID` that references the `_id` of the user that created the _resource_
