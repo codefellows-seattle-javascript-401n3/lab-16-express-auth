@@ -2,12 +2,10 @@
 ======
 
 # To Submit this Assignment
-  * fork this repository
-  * write all of your code in a directory named `lab-` + `<your name>` **e.g.** `lab-duncan`
-  * push to your repository
   * submit a pull request to this repository
   * submit a link to your PR in canvas
   * write a question and observation on canvas
+  * write how many hours you spent on canvas
 
 # Build Tool Instructions
 * create a package.json that lists all dependencies and developer dependencies
