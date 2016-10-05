@@ -22,17 +22,19 @@
  * add them to your env file
 * Using the same repository from lab 16
 * Create a new mongoose model that represents a file type that you want to store on S3
- * examples are .mp3, .mp4, .png...
-* Creaet a test that uploads one of these files to your route using form-data
+ * examples are .mp3, .mp4, and .png files...
+* create a test that uploads one of these files to your route using form-data
 * use multer to parse the request
 * upload the file to S3
 * create a new insance of your mongoose model storing the URI to your file on s3
 * respond to the client with the model stored in your mongo database
 
-## Server Endpoints
-### `/api/resource-name`
+# server endpoints
+* you choose your endpoints :)
 
 ## Tests 
+* `POST` - 200 test
+
 ## Bonus
 * 1pt - have a one to many relation ship with your model from yesterday
 * 2pt - have a delete route and test that removes your model from S3
