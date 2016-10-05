@@ -17,7 +17,7 @@
  * start - to start the server
 
 # Directions
-* create and aws accound
+* create and aws account
 * create an aws Access key and secret
  * add them to your env file
 * Using the same repository from lab 16
