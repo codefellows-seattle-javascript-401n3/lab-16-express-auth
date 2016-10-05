@@ -30,7 +30,7 @@
 * respond to the client with the model stored in your mongo database
 
 # server endpoints
-* you choose your endpoints :)
+* a `POST` request but you choose your endpoint path :)
 
 ## Tests 
 * `POST` - 200 test
