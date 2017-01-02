@@ -20,5 +20,13 @@
   "bugs": {
     "url": "https://github.com/jessicamvs/lab-16-express-auth/issues"
   },
-  "homepage": "https://github.com/jessicamvs/lab-16-express-auth#readme"
+  "homepage": "https://github.com/jessicamvs/lab-16-express-auth#readme",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "mongoose": "^4.7.5"
+  },
+  "devDependencies": {
+    "morgan": "^1.7.0"
+  }
 }
