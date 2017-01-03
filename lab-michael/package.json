@@ -1,0 +1,37 @@
+{
+  "name": "lab16-express-auth",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/silvershotm1/lab-16-express-auth.git"
+  },
+  "keywords": [
+    "express",
+    "authorization",
+    "auth"
+  ],
+  "author": "Michael Bishop",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/silvershotm1/lab-16-express-auth/issues"
+  },
+  "homepage": "https://github.com/silvershotm1/lab-16-express-auth#readme",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^3.2.0",
+    "superagent": "^3.3.1"
+  },
+  "dependencies": {
+    "bcrypt": "^1.0.2",
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "http-errors": "^1.5.1",
+    "mongoose": "^4.7.5",
+    "morgan": "^1.7.0"
+  }
+}
