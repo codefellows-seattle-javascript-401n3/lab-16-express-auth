@@ -8,6 +8,7 @@ mongoose.connect(MONGODB_URI);
 mongoose.Promise = Promise;
 
 let app = express();
+module.exports = app;
 
 if(require.main === module) {
   app.listen(PORT, () => {
