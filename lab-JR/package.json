@@ -19,5 +19,10 @@
   "bugs": {
     "url": "https://github.com/jurrish/lab-16-express-auth/issues"
   },
-  "homepage": "https://github.com/jurrish/lab-16-express-auth#readme"
+  "homepage": "https://github.com/jurrish/lab-16-express-auth#readme",
+  "dependencies": {
+    "bluebird": "^3.4.7",
+    "express": "^4.14.0",
+    "mongoose": "^4.7.5"
+  }
 }
