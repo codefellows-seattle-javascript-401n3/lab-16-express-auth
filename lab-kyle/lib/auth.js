@@ -1,26 +1,27 @@
 'use strict'
 
 let User = require('../model/user')
+let createError = require('http-errors')
 
 module.exports = (req, res, next) => {
-  let auth = req.headers.authoriztion
+  let auth = req.headers.authorization
 
   if (!auth) {
-    // throw error
+    res.send('no authorization headers set')
   }
 
   let base64String = auth.split('Basic')[1]
 
   let [username, password] = new Buffer(base64String, 'base64').toString().split(':')
 
-  User.findOne({username: username})
+  User.findOne({username})
     .then(user => {
-      if(user.password == password) {
-        console.log('logged in')
-        next()
-      } else {
-        res.json({msg: 'Wrong Password'})
+      if(!user) {
+        return next(createError(404, 'invalid username in headers'))
       }
+      return user
     })
-    .catch(/*error 'user not found' here*/)
+    .then(user => user.comparePasswordHash(password))
+    .then(() => next())
+    .catch(err => res.status(err.status).send(err.message))
 }
