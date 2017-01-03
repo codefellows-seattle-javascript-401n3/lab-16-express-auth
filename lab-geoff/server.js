@@ -8,6 +8,8 @@ mongoose.connect(MONGODB_URI);
 mongoose.Promise = Promise;
 
 let app = express();
+let router = require('./route/routes.js');
+app.use(router);
 module.exports = app;
 
 if(require.main === module) {
