@@ -1,0 +1,19 @@
+{
+  "name": "lab-16-express-auth",
+  "version": "1.0.0",
+  "description": "authentication lab",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cejac/lab-16-express-auth.git"
+  },
+  "author": "carolina ceja",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cejac/lab-16-express-auth/issues"
+  },
+  "homepage": "https://github.com/cejac/lab-16-express-auth#readme"
+}
