@@ -12,15 +12,27 @@ module.exports = (req, res, next) => {
 
   User.findOne({username: username})
     .then(user => {
-      if(user.password === password) {
-        console.log('WE ARE NOW LOGGED IN' + '\n');
-        next();
-      } else {
-        res.send('Wrong Password' + '\n');
-      }
+      return user.comparePasswords(password);
+    })
+    .then(user => {
+      res.json({username: user.username, email: user.email});
+      next();
     })
     .catch(err => {
       console.error(err);
-      res.send('Could not find user' + '\n');
     });
+      // if(user.password === password) {
+      //   console.log('WE ARE NOW LOGGED IN' + '\n');
+      //   req.user = user;
+      //   next();
+      // } else {
+      //   // console.log('DB users\'s password', user.passord);
+      //   // console.log('provided password', password);
+      //   res.send('Wrong Password' + '\n');
+      // }
+    // });
+    // .catch(err => {
+    //   console.error(err);
+    //   res.send('Could not find user' + '\n');
+    // });
 };

@@ -22,4 +22,14 @@ userSchema.methods.hashPassword = function(password) {
   });
 };
 
+userSchema.methods.comparePasswords = function(plainTextPass) {
+  return new Promise((resolve, reject) => {
+    bcrypt.compare(plainTextPass, this.password, (err, result) => {
+      if (err) return reject(err);
+      if (!result) return reject(new Error('Wrong Password'));
+      resolve(this);
+    });
+  });
+};
+
 module.exports = mongoose.model('user', userSchema);
