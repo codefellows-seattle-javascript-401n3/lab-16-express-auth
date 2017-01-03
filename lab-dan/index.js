@@ -15,6 +15,7 @@ const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost/authentication'
 
 mongoose.Promise = Promise
 mongoose.connect(MONGO_URI).then(() => {
+  // THIS WHOLE THING COULD BE A SEPARATE MODULE...BUT FOR NOW HERE IT IS
   console.log(`Mongo connected via ${MONGO_URI}`)
   // CLEAR THE DATABASE WHILE IN DEVELOPMENT
   User
