@@ -4,35 +4,34 @@ let createError = require('http-errors');
 
 module.exports = (req, res, next) => {
   let auth = req.headers.authorization;
-  console.log(auth);
   if(!auth){
-    console.error('there is no auth');
+    return next(createError(401, 'there is no auth'));
   }
-  let base64String = auth.split('Basic')[1];
+  let base64String = auth.split('Basic ')[1];
   let [username, password] = new Buffer(base64String, 'base64').toString().split(':');
 
   User.findOne({username: username})
   .then(user => {
-    console.log(user);
-    if(user.password == password) {
-      console.log(user.password);
-      console.log(password);
-      console.log('logged in');
-      next();
-    }
-    else{
-      res.json({msg: 'wrong password'});
-    }
-    // user.hashPassword(password)
-    // if(user.password == password){
-    // }
-    // else{
-    //   //error wrong password
-    // }
+    let temp = user.hashPassword(password)
+    .then(temp => {
+      console.log('user.password', user.password);
+      console.log('temp', temp.password);
+      if(user.password == temp.password) {
+        console.log('password', password);
+        console.log('logged in');
+        next();
+      }
+      else{
+        console.log('in the else');
+        console.log('user', user);
+        console.log('user.password', user.password);
+        res.json({msg: 'wrong password'});
+      }
+    });
   })
-  .catch(err => next(createError(404, 'Not Found')));
-
+  .catch(console.log('error. could not find the user'));
 };
+
 
 
 
