@@ -1,0 +1,23 @@
+{
+  "name": "lab-16-jr",
+  "version": "1.0.0",
+  "description": "lab-16",
+  "main": "server.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jurrish/lab-16-express-auth.git"
+  },
+  "author": "JR",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jurrish/lab-16-express-auth/issues"
+  },
+  "homepage": "https://github.com/jurrish/lab-16-express-auth#readme"
+}
