@@ -5,22 +5,20 @@ module.exports = (req, res, next) => {
   if(!auth) {
     res.status(400).end('needs auth');
   }
-  let base64 = auth.split('basic ')[1];
-  let [username, password] = new Buffer(base64, 'base64').toString().split(':');
+  let base64String = auth.split('Basic ')[1];
+  let [username, password] = new Buffer(base64String, 'base64').toString().split(':');
   User.findOne({username: username})
     .then(user => {
-      if (user.password == password) {
-        console.log('logged in');
-        req.user = user;
-        next();
-      }
-      else {
-        res.status(400).end('wrong password');
-      }
+      user.comparePasswordHash(password)
+      .catch(function(err) {
+        res.end('wrong password');
+      })
+      .then(next());
     })
     .catch(function(err) {
+      console.log(err);
       if(err) {
-        res.status(400).end('bad request');
+        res.status(400).end(err.message);
       }
     });
 };

@@ -1,7 +1,6 @@
 let express = require('express');
 let mongoose = require('mongoose');
-// let jsonParser = require('body-parser').json();
-let authMiddleWare = require('./lib/authentication');
+//let authMiddleWare = require('./lib/authentication');
 let morgan = require('morgan');
 let handleError = require('./lib/error');
 
@@ -13,7 +12,6 @@ let app = express();
 
 app.use(morgan('dev'));
 app.use(handleError);
-app.use(authMiddleWare);
 
 require('./route/user-route')(app);
 
