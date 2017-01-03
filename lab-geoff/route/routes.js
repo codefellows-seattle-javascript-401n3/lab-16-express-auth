@@ -26,15 +26,15 @@ router.post('/users', jsonParser, function(req, res) {
     res.sendStatus(400);
   });
 });
-router.get('/users/:id', function(req, res) {
+router.get('/users/:id', auth, function(req, res) {
   console.log('/users/:id');
-  User.findById(req.params.id, (err, user) => {
-    if(err) {
-      //not found
-    }
-    user;
+  User.findById(req.params.id)
+  .then(user => {
+    res.json(user);
+  })
+  .catch(err => {
+    //err
   });
-  res.end();
 });
 
 module.exports = router;
