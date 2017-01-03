@@ -2,7 +2,7 @@
 
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
-
+const createError = require('http-errors');
 const Schema = mongoose.Schema;
 
 const userSchema = Schema({
@@ -26,7 +26,7 @@ userSchema.methods.comparePasswords = function(plainTextPass) {
   return new Promise((resolve, reject) => {
     bcrypt.compare(plainTextPass, this.password, (err, result) => {
       if (err) return reject(err);
-      if (!result) return reject(new Error('Wrong Password'));
+      if (!result) return reject(createError(401, 'Wrong Password'));
       resolve(this);
     });
   });

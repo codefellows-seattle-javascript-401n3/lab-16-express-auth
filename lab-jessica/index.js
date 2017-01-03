@@ -7,8 +7,6 @@ const morgan = require('morgan');
 const jsonParser = require('body-parser').json();
 const app = express();
 
-// * Use the `http-errors` npm  module with the new`error-response` middleware from lecture
-
 // app modules
 const userRoutes = require('./routes/user-routes.js');
 
@@ -24,7 +22,11 @@ app.use(morgan('dev'));
 app.use(jsonParser);
 app.use(userRoutes);
 
+module.exports = app;
+
 // start server
-app.listen(PORT, () => {
-  console.log('listening on PORT', PORT);
-});
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log('listening on PORT', PORT);
+  });
+}
