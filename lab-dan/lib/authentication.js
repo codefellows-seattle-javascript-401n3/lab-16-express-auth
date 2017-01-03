@@ -1,3 +1,5 @@
+'use strict'
+
 const User = require('../model/user')
 const createError = require('http-errors')
 
@@ -10,6 +12,9 @@ module.exports = (req, res, next) => {
   User
     .findOne({username: username})
     .then(user => {
+      if(!user) {
+        return next(createError(401, 'Invalid username or password'))
+      }
       user.hashAndComparePassword(password)
         .then(result => {
           if(result) {

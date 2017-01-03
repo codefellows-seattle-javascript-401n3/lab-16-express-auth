@@ -1,3 +1,5 @@
+'use strict'
+
 const Express = require('express')
 const router = Express.Router()
 const morgan = require('morgan')
@@ -23,8 +25,12 @@ mongoose.connect(MONGO_URI).then(() => {
         username: 'Admin',
         password: process.env.ADMIN_PASS || '1234_admin'
       })
-      adminSeed.save()
+      adminSeed
+        .hashAndStorePassword(adminSeed.password)
+        .then(user => user.save())
+        .catch(err => console.error(err))
     })
+    .catch(err => console.error(err))
 })
 
 require('./routes/user-routes')(router)
