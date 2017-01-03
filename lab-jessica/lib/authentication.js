@@ -13,14 +13,14 @@ module.exports = (req, res, next) => {
   User.findOne({username: username})
     .then(user => {
       if(user.password === password) {
-        console.log('WE ARE NOW LOGGED IN');
+        console.log('WE ARE NOW LOGGED IN' + '\n');
         next();
       } else {
-        res.send('Wrong Password');
+        res.send('Wrong Password' + '\n');
       }
     })
     .catch(err => {
       console.error(err);
-      res.send('Could not find user');
+      res.send('Could not find user' + '\n');
     });
 };
