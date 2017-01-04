@@ -14,6 +14,7 @@ userSchema.methods.hashPass = function(password) {
     bcrypt.hash(password, 10, (err, hash) => {
       if(err) return reject(err);
       this.password = hash;
+      console.log(this.password);
       resolve(this);
     });
   });
