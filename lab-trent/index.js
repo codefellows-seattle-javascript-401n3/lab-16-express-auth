@@ -4,13 +4,11 @@ const mongoose = require('mongoose');
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
-
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/event';
-const PORT = process.env.PORT || 3000;
+const constants = require('./lib/constants');
 
 mongoose.Promise = Promise;
 
-mongoose.connect(MONGODB_URI, function(err) {
+mongoose.connect(constants.MONGODB_URI, function(err) {
   if (err)
     throw err;
   console.log('Successfully connected to MongoDB');
@@ -34,7 +32,7 @@ app.use(function(err, req, res, next) {
 module.exports = app;
 
 if (require.main === module) {
-  app.listen(PORT, function() {
-    console.log('Server listening on http://localhost/:' + PORT);
+  app.listen(constants.PORT, function() {
+    console.log('Server listening on http://localhost/:' + constants.PORT);
   });
 }
