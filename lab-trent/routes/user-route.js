@@ -19,7 +19,7 @@ router.post('/users', function(req, res, next) {
 
 router.get('/users/:id', authMiddleware, function(req, res, next) {
   User.findById(req.params.id)
-  .then(user => res.json(user))
+  .then(user => res.json({ id: user._id, username: user.username, email: user.email }))
   .catch(next);
 });
 
