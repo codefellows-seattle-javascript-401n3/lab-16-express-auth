@@ -17,7 +17,7 @@ mongoose.connect(constants.MONGODB_URI, function(err) {
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-app.use('/api', require('./routes/user-route'));
+app.use(require('./routes/user-route'));
 
 app.use(function(err, req, res, next) {
   if (err) {
