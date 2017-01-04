@@ -9,7 +9,7 @@ const User = require('../models/user');
 
 const authMiddleware = require('../lib/authentication');
 
-const router = express.Router();
+const router = module.exports = express.Router();
 
 router.post('/users', function(req, res, next) {
   new User(req.body).save().then(function(user) {

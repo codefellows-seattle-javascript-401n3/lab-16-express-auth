@@ -21,9 +21,9 @@ module.exports = function(req, res, next) {
     }
     let base64String = auth.split('Basic')[1];
 
-    let [username, password] = new Buffer(base64String, 'base64').toString().split(':');
-    User.findOne({username: username}).then(function(user) {
-      if (user.password == password) {
+    let details = new Buffer(base64String, 'base64').toString().split(':')[0];
+    User.findOne({username: details[0]}).then(function(user) {
+      if (user.password == details[1]) {
         next();
       } else {
         return next(createError(403, 'Invalid username or password.'));
