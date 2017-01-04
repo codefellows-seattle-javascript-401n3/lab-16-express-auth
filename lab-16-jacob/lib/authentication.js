@@ -10,7 +10,8 @@ module.exports = (req, res, next) => {
   User.findOne({username: username})
     .then(user => {
       return user.comparePasswordHash(password)
-      .then(() => {
+      .then((user) => {
+        req.user = user;
         next();
       })
       .catch(function() {

@@ -4,7 +4,8 @@ let createError = require('http-errors');
 
 let userSchema = mongoose.Schema({
   username: {type: String, required: true, unique: true},
-  password: String //THIS WOULD BE BAD
+  password: {type: String, required: true}, 
+  email: {type: String, required: true}
 });
 
 //new way to set proper methods

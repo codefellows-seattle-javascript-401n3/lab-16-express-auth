@@ -1,8 +1,7 @@
 let authMiddleWare = require('../lib/authentication');
 let User = require('../model/user');
-//let express = require('express');
 let jsonParser = require('body-parser').json();
-//let app = express();
+//let createError = require('http-errors');
 
 
 module.exports = (router) => {
@@ -12,12 +11,15 @@ module.exports = (router) => {
     .then(user => {
       user.save(); //saves with hashed password into DB
       res.json(`${user.username} has been created`);
+    })
+    .catch(() => {
+      res.status(401).end('invalid body');
     });
   });
   router.get('/users/:id', authMiddleWare,  (req, res) => {
     User.findById(req.params.id)
-    .then(() => {
-      res.send('success');
+    .then((user) => {
+      res.send(`${user.username} is logged in`);
     })
     .catch(() => res.status(404).end('not found'));
   });
@@ -32,12 +34,21 @@ module.exports = (router) => {
       }
     });
   });
-  // router.post('/login', (req, res) => {
-  // });
+  router.delete('/users:id', (req, res) => {
+    User.findById(req.params.id)
+    .then(function(user) {
+      user.remove({_id: user._id}, function(err) {
+        if(err) {
+          res.status(404).end('not found');
+          return;
+        }
+        res.status(204).end();
+      });
+    })
+      .catch(function(err) {
+        if(err) {
+          res.status(404).end('user not found');
+        }
+      });
+  });
 };
-
-// app.post('/login', function(req, res) {
-//   console.log('hello');
-// });
-
-//curl -u 'user:pass' http://localhost:3000/users/1

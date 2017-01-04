@@ -17,6 +17,11 @@
     "mongoose": "^4.7.5"
   },
   "devDependencies": {
-    "morgan": "^1.7.0"
+    "chai": "^3.5.0",
+    "gulp-eslint": "^3.0.1",
+    "gulp-mocha": "^3.0.1",
+    "mocha": "^3.2.0",
+    "morgan": "^1.7.0",
+    "superagent": "^3.3.1"
   }
 }

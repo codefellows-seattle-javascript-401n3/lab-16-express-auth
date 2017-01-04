@@ -15,6 +15,8 @@ app.use(handleError);
 
 require('./route/user-route')(app);
 
+module.exports = app;
+
 if(require.main === module) {
   app.listen(PORT, () => console.log(`server started on ${PORT}`));
 }
