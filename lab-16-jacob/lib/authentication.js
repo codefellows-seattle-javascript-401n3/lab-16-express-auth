@@ -9,11 +9,13 @@ module.exports = (req, res, next) => {
   let [username, password] = new Buffer(base64String, 'base64').toString().split(':');
   User.findOne({username: username})
     .then(user => {
-      user.comparePasswordHash(password)
-      .catch(function(err) {
-        res.end('wrong password');
+      return user.comparePasswordHash(password)
+      .then(() => {
+        next();
       })
-      .then(next());
+      .catch(function() {
+        res.end('wrong password');
+      });
     })
     .catch(function(err) {
       console.log(err);

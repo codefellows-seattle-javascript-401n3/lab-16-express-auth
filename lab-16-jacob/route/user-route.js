@@ -1,5 +1,4 @@
 let authMiddleWare = require('../lib/authentication');
-let errMiddleWare = require('../lib/error')
 let User = require('../model/user');
 //let express = require('express');
 let jsonParser = require('body-parser').json();
@@ -17,6 +16,9 @@ module.exports = (router) => {
   });
   router.get('/users/:id', authMiddleWare,  (req, res) => {
     User.findById(req.params.id)
+    .then(() => {
+      res.send('success');
+    })
     .catch(() => res.status(404).end('not found'));
   });
   router.post('/signup', (req, res) => {
