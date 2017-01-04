@@ -11,5 +11,19 @@
     "url": "\u001b[2~https://github.com/titandino/lab-16-express-auth"
   },
   "author": "Trenton Kress",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "gulp": "^3.9.1",
+    "gulp-eslint": "^3.0.1",
+    "gulp-mocha": "^3.0.1",
+    "mocha": "^3.1.2"
+  },
+  "dependencies": {
+    "isomorphic-fetch": "^2.2.1",
+    "body-parser": "^1.15.2",
+    "bcrypt-nodejs": "0.0.3",
+    "express": "^4.14.0",
+    "mongoose": "^4.7.6"
+  }
 }
