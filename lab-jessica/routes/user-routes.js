@@ -17,7 +17,7 @@ router.post('/users', (req, res) => {
     .then(user => res.json({username: user.username, email: user.email, _id: user._id}))
     .catch(err => {
       console.error(err);
-      res.status(400).send('bad request' + '\n');
+      res.status(401).send('bad request' + '\n');
     });
 });
 

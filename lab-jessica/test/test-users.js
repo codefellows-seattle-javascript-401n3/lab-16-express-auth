@@ -43,24 +43,22 @@ describe('testing user routes', function() {
       });
     });
 
-    //  * `POST` - test 400, responds with the `http-errors` 401 name, for 'invalid body`
-    // it('should respond 401 if invalid body provided', function(done) {
-    //   request.post('localhost:3000/users')
-    //   .send('sjsdkgs')
-    //   .end((err, res) => {
-    //     expect(res.status).to.equal(401);
-    //     done();
-    //   });
-    // });
+    it('should respond 401 if invalid body provided', function(done) {
+      request.post('localhost:3000/users')
+      .send('sjsdkgs')
+      .end((err, res) => {
+        expect(res.status).to.equal(401);
+        done();
+      });
+    });
 
-    //  * `POST` - test 400, responds with the `http-errors` 401 name, for if no `body provided`
-    // it('should return 401 if no body provided', function(done) {
-    //   request.post('localhost:3000/users')
-    //   .end((err, res) => {
-    //     expect(res.status).to.equal(401);
-    //     done();
-    //   });
-    // });
+    it('should return 401 if no body provided', function(done) {
+      request.post('localhost:3000/users')
+      .end((err, res) => {
+        expect(res.status).to.equal(401);
+        done();
+      });
+    });
 
   });
 
