@@ -3,7 +3,6 @@
 let authMiddleWare = require('../lib/authentication');
 let User = require('../model/user');
 let jsonParser = require('body-parser').json();
-//let createError = require('http-errors');
 
 
 module.exports = (router) => {
