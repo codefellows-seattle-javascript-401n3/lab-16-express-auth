@@ -1,3 +1,5 @@
+'use strict';
+
 let User = require('../model/user'); //basic auth middleware
 
 module.exports = (req, res, next) => {
@@ -15,7 +17,7 @@ module.exports = (req, res, next) => {
         next();
       })
       .catch(function() {
-        res.end('wrong password');
+        res.status(401).end('wrong password');
       });
     })
     .catch(function(err) {

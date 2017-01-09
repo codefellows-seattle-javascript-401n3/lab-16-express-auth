@@ -1,10 +1,12 @@
+'use strict';
+
 let mongoose = require('mongoose');
 let bcrypt = require('bcrypt');
 let createError = require('http-errors');
 
 let userSchema = mongoose.Schema({
   username: {type: String, required: true, unique: true},
-  password: {type: String, required: true}, 
+  password: {type: String, required: true},
   email: {type: String, required: true}
 });
 
