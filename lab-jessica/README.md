@@ -18,7 +18,7 @@ password   | string       | true         | false
 + Pass data as stringified JSON in the body of the request to create a user.
 + Returns the new user's info without the password.
 + Example Curl Request:
-`curl -i -H "Accept: application/json" -H "Content-Type: application/json" -X POST -d '{"username": "jessica", "email": "jessica@email.com", "password": "hello"}' localhost:3000/api/books`
+`curl -i -H "Accept: application/json" -H "Content-Type: application/json" -X POST -d '{"username": "jessica", "email": "jessica@email.com", "password": "hello"}' localhost:3000/users`
 + Example Response:
 ``{
   "username": "jessica",
