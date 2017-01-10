@@ -19,5 +19,4 @@ exports.createExample = function(data){
 
 exports.fetchExample = function(id){
   return Example.findOne({_id: id});
-};
-
+}

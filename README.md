@@ -14,12 +14,12 @@
 * include an .eslintrc
 * use a .env file **but do not include it**
 * include a .gitignore
- * **add the string `db` to your getignore**
+ * **add the string `db` to your gitignore**
  * **add the string `.env` to your gitignore**
 * include a readme with a project description and route docs
 
 # Directions
-* Create these directories to organize your code: 
+* Create these directories to organize your code:
  * db - use the command `mongod --dbpath ./db` to start mongod using this directory
  * lib
  * model
@@ -29,7 +29,7 @@
 * Use the `http-errors` npm  module with the new`error-response` middleware from lecture
 * Create a **User Model** using mongoose with the properties `username`, `password`, and `findHash`
  * The user must have a unique username and findhash
- * the user must have an email 
+ * the user must have an email
  * The user must never store the password as plain text (hash the password)
  * The user must have a method for genorating a token from the findHash
 * Create a Basic Auth Middleware for parsing basic auth headers
@@ -50,12 +50,12 @@
  * the server should respond with a 400 Bad Request to failed request
 
 ### `/api/signin`
-* `GET` request 
+* `GET` request
  * the client should pass the username and password to the server using a _Basic_ auth header
  * the server should respond with a token to authenticated users
  * the server should respond with a 401 Unauthorized to non authenticated users
 
-## Tests 
+## Tests
 * your tests should start your server when they begin and stop your server when they finish
 * write a test to ensure that your api returns a status code of 404 for routes that have not been registered
 * `/api/signup`

@@ -26,16 +26,15 @@
 * create a test that uploads one of these files to your route using form-data
 * use multer to parse the request
 * upload the file to S3
-* create a new insance of your mongoose model storing the URI to your file on s3
+* create a new instance of your mongoose model storing the URI to your file on s3
 * respond to the client with the model stored in your mongo database
 
 # server endpoints
 * a `POST` request but you choose your endpoint path :)
 
-## Tests 
+## Tests
 * `POST` - 200 test
 
 ## Bonus
 * 1pt - have a one to many relation ship with your model from yesterday
 * 2pt - have a delete route and test that removes your model from S3
-
