@@ -1,16 +1,22 @@
 'use strict';
 
-const express = require('express')
-const app = express()
+const mongoURI = process.env.MONGO_URI || 'mongodb://localhost/example';
+const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
+mongoose.connect(mongoURI);
 
-const PORT = process.env.PORT || 3000
-const auth = require('./lib/authentication.js')
+const exampleSchema = mongoose.Schema({
+  content: String
+});
 
-app.post('/login', (req, res) => {
-  res.send('Got a POST request')
-})
+const Example = mongoose.model('example', exampleSchema);
 
+exports.createExample = function(data){
+  const salt = bcrypt.genSaltSync(8);
+  data.content = bcrypt.hashSync(data.content, salt);
+  return new Example(data).save();
+};
 
-
-app.listen(3000, () => console.log(`server up on port ${PORT}`))
-console.log()
+exports.fetchExample = function(id){
+  return Example.findOne({_id: id});
+}
