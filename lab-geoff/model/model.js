@@ -14,8 +14,20 @@ userSchema.methods.hashPass = function(password) {
     bcrypt.hash(password, 10, (err, hash) => {
       if(err) return reject(err);
       this.password = hash;
-      console.log(this.password);
       resolve(this);
+    });
+  });
+};
+
+userSchema.methods.comparePass = function(password) {
+  console.log('comparePass');
+  return new Promise((resolve, reject) => {
+    bcrypt.compare(password, this.password, (err, valid) => {
+      if(err) {
+        reject(err);
+      } else {
+        resolve(valid);
+      }
     });
   });
 };

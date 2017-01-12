@@ -16,16 +16,15 @@ describe('.routes.js', function() {
   describe('/users post()', function() {
     it('should add a new user' , function(done) {
       request.post('http://localhost:3000/users')
-      .send({username : 'newUser', password: 'testPass', email: 'testEmail'})
+      .send({username : 'newuser', password: 'testPass', email: 'testEmail'})
       .set('Accept', 'application/json')
       .end((err, res) => {
         if(err) {
           return done(err);
         } else {
           console.log(res.body);
-          console.log(res.body.id);
-          id = res.body.id;
-          console.log(res.status);
+          id = res.body._id;
+          console.log(id);
           expect(res.status).to.equal(200);
           done();
         }
@@ -36,12 +35,13 @@ describe('.routes.js', function() {
     it('should get a user from the db', function(done) {
       console.log('send base64 password in authentication header');
       request.get(`http://localhost:3000/users/${id}`)
-      .auth('newUser', 'testPass')
+      .auth('newuser', 'testPass')
       .end((err, res) => {
         if(err) {
           return done(err);
         } else {
           console.log(res.status);
+          expect(res.status).to.equal(200);
         }
       });
       done();

@@ -12,30 +12,12 @@ router.post('/users', jsonParser, (req, res) => {
   let body = req.body;
   console.log(body);
   let user = new User(body);
-  console.log(user.password);
   user.hashPass(user.password)
     .then(user => user.save())
-    .then(user => res.json({user: user.username, id: user._id}))
+    .then(user => res.json(user))
     .catch();
-  // .then(user => {
-  //   user.save(err => {
-  //     if(err) {
-  //       console.log('save error');
-  //       res.status(400);
-  //       res.end();
-  //     }
-  //     // if(err) res.sendStatus(400);
-  //     // console.error(err);
-  //   });
-  // })
-  // .then((user) => {
-  //   res.json(user.username);
-  // })
-  // .catch(err => {
-  //   console.error(err);
-  //   res.sendStatus(400);
-  // });
 });
+
 router.get('/users/:id', auth, function(req, res) {
   console.log('/users/:id');
   User.findById(req.params.id)
