@@ -1,6 +1,7 @@
 let User = require('../models/user');
 let authMiddlewear = require('../lib/authentication');
 let jsonParser = require('body-parser').json();
+
 module.exports = (router) => {
   router.post('/users', jsonParser, (req, res) => {
     let user = new User(req.body);
