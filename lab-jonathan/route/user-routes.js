@@ -2,7 +2,6 @@ let User = require('../model/model');
 let authMiddleware = require('../lib/authMiddleware');
 let jsonParser = require('body-parser').json();
 let createError = require('http-errors');
-let bcrypt = require('bcrypt');
 
 module.exports = (router) => {
   router.post('/users', jsonParser, (req, res) => {
@@ -10,7 +9,7 @@ module.exports = (router) => {
     user.hashPassword(user.password)
       .then(user => user.save())
       .then(user => res.json(user))
-      .catch();
+      .catch(console.error);
   });
 
   router.get('/users/:id', authMiddleware, (req, res) => {
