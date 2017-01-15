@@ -23,7 +23,4 @@ module.exports = (router) => {
       .catch(()=> res.status(404).send('not found'))
   })
 
-  router.get('/pets/:id', authMiddleware, (req, res) => {
-    if (req.user.username)
-  })
 }

@@ -3,6 +3,7 @@
 let mongoose = require('mongoose')
 let bcrypt = require('bcrypt')
 let createError = require('http-errors')
+let jwt = require('jsonwebtoken')
 
 let Schema = mongoose.Schema
 
@@ -31,4 +32,11 @@ userSchema.methods.comparePasswordHash = function(password){
   })
 }
 
+userSchema.methods.generateToken = function(password) {
+  return new Promise((resolve, reject) => {
+    if (err) return reject(err)
+    let sign = jwt.sign({id: this._id}, process.env.SECRET || 'DEV')
+    resolve(sign)
+  })
+}
 module.exports = mongoose.model('user', userSchema)

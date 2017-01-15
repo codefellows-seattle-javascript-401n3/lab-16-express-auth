@@ -19,6 +19,7 @@ module.exports = (req, res, next) => {
       if(!user) {
         return next(createError(404, 'invalid username in headers'))
       }
+      req.user = user
       return user
     })
     .then(user => user.comparePasswordHash(password))
