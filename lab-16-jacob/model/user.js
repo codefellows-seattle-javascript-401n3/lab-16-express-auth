@@ -33,9 +33,14 @@ userSchema.methods.comparePasswordHash = function(password) {
   });
 };
 
-userSchema.methods.generateToken = function(password) {
-  //TODO: promisify this function here
-  return jwt.sign({id: this._id}, process.env.SECRET || 'DEV'); //signature computed based on header and payload.
-}; //first param: payload, second: secret, third: options.
+userSchema.methods.generateToken = function() {
+  return new Promise ((resolve, reject) => {
+    let token = jwt.sign({id: this._id}, process.env.SECRET || 'DEV');
+    if(!token) {
+      reject('could not generate token');
+    }
+    resolve(token);
+  });
+};
 
 module.exports = mongoose.model('user', userSchema);

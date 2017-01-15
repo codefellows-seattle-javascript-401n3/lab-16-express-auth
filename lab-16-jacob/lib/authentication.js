@@ -3,7 +3,7 @@
 let User = require('../model/user'); //basic auth middleware
 
 module.exports = (req, res, next) => {
-  let headers = req.headers;
+  // let headers = req.headers;
   let auth = req.headers.authorization;
   if(!auth) {
     res.status(400).end('needs auth');

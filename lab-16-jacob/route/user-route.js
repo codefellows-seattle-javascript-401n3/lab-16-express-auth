@@ -1,6 +1,6 @@
 'use strict';
 
-let bearerAuth = require('../lib/bearer-auth')
+let bearerAuth = require('../lib/bearer-auth');
 let authMiddleWare = require('../lib/authentication');
 let User = require('../model/user');
 let jsonParser = require('body-parser').json();
@@ -18,14 +18,34 @@ module.exports = (router) => {
       res.status(401).end('invalid body');
     });
   });
-  router.get('/users', bearerAuth,  (req, res) => { //because of authMiddleWare being called, we will have the req.user property!
-    if(req.user) { //token will dictate what user you're looking up
-      delete req.user.password;
-      res.json(req.user);
-    }
-    else {
-      User.find({}).then(users => res.json(users));
-    }
+  router.get('/users/:id', bearerAuth,  (req, res) => { //because of authMiddleWare being called, we will have the req.user property!
+    User.findById(req.params.id)
+    .then((user) => {
+      res.json(user);
+    })
+    .catch(function(err) {
+      if(err) {
+        res.status(404).end('user not found');
+      }
+    });
+  });
+  router.put('/users/:id', bearerAuth, jsonParser, (req, res) => {
+    User.findById(req.params.id)
+    .then(function(user) {
+      user.update((req.body), function(err) {
+        if (err) {
+          res.status(400).end('bad request');
+        } else {
+          res.status(200).json(user);
+        }
+      });
+    })
+    .catch(function(err) {
+      if(err) {
+        console.log(err);
+        res.status(404).end('not found');
+      }
+    });
   });
   router.delete('/users/:id', authMiddleWare, (req, res) => {
     User.findById(req.params.id)
@@ -44,7 +64,3 @@ module.exports = (router) => {
     });
   });
 };
-
-//context of the request
-//why in req.headers
-//why in req.body
