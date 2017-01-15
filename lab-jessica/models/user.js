@@ -3,12 +3,14 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const createError = require('http-errors');
+const jwt = require('jsonwebtoken');
 const Schema = mongoose.Schema;
 
 const userSchema = Schema({
   username: {type: String, required: true, unique: true},
   email: {type: String, require: true, unique: true},
   password: {type: String, required: true},
+  classes: [{type: Schema.Types.ObjectId, ref: 'class'}]
 });
 
 userSchema.methods.hashPassword = function(password) {
@@ -29,6 +31,11 @@ userSchema.methods.comparePasswords = function(plainTextPass) {
       resolve(this);
     });
   });
+};
+
+userSchema.methods.generateToken = function() {
+  console.log('RETURNING THE TOKEN YAYA');
+  return Promise.resolve(jwt.sign({id: this._id}, process.env.SECRET || 'DEV'));
 };
 
 module.exports = mongoose.model('user', userSchema);
