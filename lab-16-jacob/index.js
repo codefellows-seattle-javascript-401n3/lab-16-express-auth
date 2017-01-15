@@ -16,6 +16,8 @@ app.use(morgan('dev'));
 app.use(handleError);
 
 require('./route/user-route')(app);
+require('./route/auth-routes')(app);
+
 
 module.exports = app;
 

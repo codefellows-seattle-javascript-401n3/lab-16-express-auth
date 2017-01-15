@@ -3,6 +3,7 @@
 let mongoose = require('mongoose');
 let bcrypt = require('bcrypt');
 let createError = require('http-errors');
+let jwt = require('jsonwebtoken');
 
 let userSchema = mongoose.Schema({
   username: {type: String, required: true, unique: true},
@@ -31,5 +32,10 @@ userSchema.methods.comparePasswordHash = function(password) {
     });
   });
 };
+
+userSchema.methods.generateToken = function(password) {
+  //TODO: promisify this function here
+  return jwt.sign({id: this._id}, process.env.SECRET || 'DEV'); //signature computed based on header and payload.
+}; //first param: payload, second: secret, third: options.
 
 module.exports = mongoose.model('user', userSchema);

@@ -1,5 +1,6 @@
 'use strict';
 
+let bearerAuth = require('../lib/bearer-auth')
 let authMiddleWare = require('../lib/authentication');
 let User = require('../model/user');
 let jsonParser = require('body-parser').json();
@@ -17,12 +18,14 @@ module.exports = (router) => {
       res.status(401).end('invalid body');
     });
   });
-  router.get('/users/:id', authMiddleWare,  (req, res) => {
-    User.findById(req.params.id)
-    .then((user) => {
-      res.send(`${user.username} is logged in`);
-    })
-    .catch(() => res.status(404).end('not found'));
+  router.get('/users', bearerAuth,  (req, res) => { //because of authMiddleWare being called, we will have the req.user property!
+    if(req.user) { //token will dictate what user you're looking up
+      delete req.user.password;
+      res.json(req.user);
+    }
+    else {
+      User.find({}).then(users => res.json(users));
+    }
   });
   router.delete('/users/:id', authMiddleWare, (req, res) => {
     User.findById(req.params.id)
@@ -41,3 +44,7 @@ module.exports = (router) => {
     });
   });
 };
+
+//context of the request
+//why in req.headers
+//why in req.body
