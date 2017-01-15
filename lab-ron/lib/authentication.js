@@ -1,36 +1,60 @@
-let User = require('../models/user');
+'use strict';
+
+let User = require('../models/user.js');
+let createError = require('http-errors');
 
 module.exports = (req, res, next) => {
   let auth = req.headers.authorization;
-  console.log(auth);
-  if (!auth) {
-    // throw error
+  console.log('here is the auth: ', auth);
+  if(!auth) {
+    console.error('error', err);
   }
-  // extracting the base64 encoded string
+
   let base64String = auth.split('Basic')[1];
-  // fancy node shorthand
   let [username, password] = new Buffer(base64String, 'base64').toString().split(':');
-  /* long form of what's going on above
-  let tmpBuffer = new Buffer(base64String, 'base64')
-  let tmpString = tmpBuffer.toString()
-  let userNamePasswordArray = tmpString.split(':')
-  let username = userNamePasswordArray[0]
-  let password = userNamePasswordArray[1]
-  */
-  User.findOne({username: username
+  console.log(username);
+  console.log(password);
+  User.find({username: username})
     .then(user => {
-      console.log(user);
       if (user.password == password) {
-        console.log(user.password);
-        console.log(password);
         console.log('logged in');
+        req.user = user;
         next();
       }
-      else {
-        // Error wrong password
-        res.json({msg: 'wrong password'});
+      else{
+        (err => next(createError(404, 'error, user not found')));
+        //LOG IN
       }
+      next();
     })
-    .catch(/*Error user not found*/)
-});
+    .catch((err => next(createError(404, 'error, user not found'))));
 };
+
+// let User = require('../models/user');
+// let createError = require('http-errors');
+//
+// module.exports = (req, res, next) => {
+//   let auth = req.headers.authorization;
+//   console.log('this is the auth: ', auth);
+//   if (!auth) {
+//     console.error('no auth provided.');
+//   }
+// /*cannot read auth below, the split function misfire tell me so.*/
+//   let base64String = auth.split('Basic')[1];
+//   let [username, password] = new Buffer(base64String, 'base64').toString().split(':');
+//
+//   User.findOne({username: username})
+//     .then(user => {
+//       console.log(user);
+//       if (user.password == password) {
+//         console.log(user.password);
+//         console.log(password);
+//         console.log('logged in');
+//         next();
+//       }
+//       else {
+//         res.json({msg: 'error, wrong password.'});
+//       }
+//     })
+//     .catch(err => next(createError(404, 'error, user not found')));
+// };

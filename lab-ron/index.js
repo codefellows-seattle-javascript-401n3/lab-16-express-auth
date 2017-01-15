@@ -1,22 +1,47 @@
 'use strict';
 
-const mongoURI = process.env.MONGO_URI || 'mongodb://localhost/example';
-const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
-mongoose.connect(mongoURI);
+let express = require('express');
+let mongoose = require('mongoose');
+let morgan = require('morgan');
+let authMiddlewear = require('./lib/authentication.js');
 
-const exampleSchema = mongoose.Schema({
-  content: String
-});
+const PORT = process.env.PORT | 3000;
+mongoose.connect('mongodb://localhost/dev');
+mongoose.Promise = Promise;
 
-const Example = mongoose.model('example', exampleSchema);
+let app = express();
 
-exports.createExample = function(data){
-  const salt = bcrypt.genSaltSync(8);
-  data.content = bcrypt.hashSync(data.content, salt);
-  return new Example(data).save();
-};
+app.use(morgan('dev'));
+//app.use(authMiddlewear);
+require('./routes/user-routes.js')(app);
 
-exports.fetchExample = function(id){
-  return Example.findOne({_id: id});
-}
+app.listen(PORT, () => console.log(`server is running on ${PORT}`));
+
+
+
+// let express = require('express');
+// let mongoose = require('mongoose');
+// let morgan = require('morgan');
+// let authMiddlewear = require('./lib/authentication');
+//
+// const PORT = process.env.port || 3000;
+// mongoose.connect('mongodb://localhost/dev');
+// mongoose.Promise = Promise;
+//
+// let app = express();
+//
+// app.use(morgan('dev'));
+// app.use(authMiddlewear);
+
+// require('./routes/user-routes')(app);
+// require('./routes/auth-routes.js');
+//
+//
+// app.listen(PORT, () => console.log(`server started on ${PORT}`));
+
+
+
+// app.post('/login', authMiddlewear, (req, res) => {
+//   console.log(req.headers.authorization);
+//   res.end();
+// });
