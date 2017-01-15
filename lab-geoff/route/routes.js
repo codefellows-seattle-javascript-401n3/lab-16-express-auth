@@ -2,15 +2,14 @@
 
 let jsonParser = require('body-parser').json();
 let User = require('../model/model.js');
-let auth = require('../lib/auth.js');
+let basicAuth = require('../lib/auth.js');
 let Router = require('express').Router;
 let router = new Router();
 
 router.post('/users', jsonParser, (req, res) => {
-  console.log('/users');
-  console.log(req.body);
+  //if auth sent -> generate token
+  //else do below
   let body = req.body;
-  console.log(body);
   let user = new User(body);
   user.hashPass(user.password)
     .then(user => user.save())
@@ -18,7 +17,7 @@ router.post('/users', jsonParser, (req, res) => {
     .catch();
 });
 
-router.get('/users/:id', auth, function(req, res) {
+router.get('/users/:id', basicAuth, function(req, res) {
   console.log('/users/:id');
   User.findById(req.params.id)
   .then(user => {
