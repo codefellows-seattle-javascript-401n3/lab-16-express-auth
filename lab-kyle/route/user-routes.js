@@ -16,7 +16,14 @@ module.exports = (router) => {
 
   router.get('/users/:id', authMiddleware, (req, res) => {
     User.findById(req.params.id)
-      .then(user => res.json(user.username))
+      .then(user => {
+        delete req.user.password
+        res.json(user.username)
+      })
       .catch(()=> res.status(404).send('not found'))
+  })
+
+  router.get('/pets/:id', authMiddleware, (req, res) => {
+    if (req.user.username)
   })
 }
