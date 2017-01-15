@@ -9,6 +9,7 @@ const app = express();
 
 // app modules
 const userRoutes = require('./routes/user-routes.js');
+const authRoutes = require('./routes/auth-routes.js');
 
 // module constants
 const PORT = process.env.PORT || 3000;
@@ -21,6 +22,7 @@ mongoose.Promise = Promise;
 app.use(morgan('dev'));
 app.use(jsonParser);
 app.use(userRoutes);
+app.use(authRoutes);
 
 module.exports = app;
 
