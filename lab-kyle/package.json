@@ -23,6 +23,8 @@
     "mongoose": "^4.7.5"
   },
   "devDependencies": {
-    "morgan": "^1.7.0"
+    "chai": "^3.5.0",
+    "morgan": "^1.7.0",
+    "superagent": "^3.3.1"
   }
 }
