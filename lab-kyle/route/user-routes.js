@@ -16,12 +16,8 @@ module.exports = (router) => {
   })
 
   router.get('/users', bearerAuth, (req, res) => {
-    // if (req.user) {
     // delete req.user.password
     res.json(req.user)
-    // } else {
-    //   User.find({}).then(users => res.json(users))
-    // }
   })
 
 }

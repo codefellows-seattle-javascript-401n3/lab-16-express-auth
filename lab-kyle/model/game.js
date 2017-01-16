@@ -7,7 +7,7 @@ let Schema = mongoose.Schema
 let gameSchema = Schema({
   name: {type: String, required: true},
   rating: {type: String, required: true},
-  userID: null
+  userID: {type: String}
 })
 
 module.exports = mongoose.model('game', gameSchema)
