@@ -1,3 +1,4 @@
+'use strict';
 
 let mongoose = require('mongoose');
 let bcrypt = require('bcrypt');
@@ -6,7 +7,7 @@ let createError = require('http-errors');
 let userSchema = mongoose.Schema({
   username: {type: String, required: true, unique: true},
   password: {type: String, required: true}, // THIS IS OMGWTFBBQ TERRIBLE
-  email: {type: String, unique:true}
+  email: {type: String, required: true, unique:true}
 });
 
 // DO NOT USE AN ARROW FUNCTION HERE

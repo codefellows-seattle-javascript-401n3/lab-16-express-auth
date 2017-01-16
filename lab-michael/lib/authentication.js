@@ -1,3 +1,5 @@
+'use strict';
+
 let createError = require('http-errors');
 let User = require('../model/user');
 
@@ -5,7 +7,7 @@ module.exports = (req, res, next) => {
   let auth = req.headers.authorization;
   console.log(auth);
   if (!auth) {
-    throw new Error('Authorization Headers needed');
+    res.send('Authorization Headers needed');
   }
   // extracting the base64 encoded string
   let base64String = auth.split('Basic')[1];
@@ -18,7 +20,7 @@ module.exports = (req, res, next) => {
   let username = userNamePasswordArray[0]
   let password = userNamePasswordArray[1]
   */
-  User.findOne({username: username})
+  User.findOne({username})
   // console.log(username)
     .then(user => {
       if(!user) {
@@ -26,13 +28,14 @@ module.exports = (req, res, next) => {
       }
       if(req.params.id === user._id) {
         return user.comparePasswordHash(password);
+      } else {
+        return Promise.reject(createError(401, 'Error: User not Authorized'));
       }
-      return Promise.reject(createError(401, 'Error: User not Authorized'));
       // console.log(user);
     })
     .then(user => {
       req.user = user;
-      next();
+      // next();
     })
     // .then(() => next())
 
