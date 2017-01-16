@@ -20,26 +20,24 @@ module.exports = (req, res, next) => {
   let username = userNamePasswordArray[0]
   let password = userNamePasswordArray[1]
   */
-  User.findOne({username})
+  User.findOne({username: username})
   // console.log(username)
     .then(user => {
       if(!user) {
-        return Promise.reject(createError(404, 'Error: User Not Found'));
+        return Promise.reject(createError(404, 'User not found in database'));
       }
-      if(req.params.id === user._id) {
+      if(req.params.id == user._id) {
         return user.comparePasswordHash(password);
-      } else {
-        return Promise.reject(createError(401, 'Error: User not Authorized'));
       }
-      // console.log(user);
+      return Promise.reject(createError(401, 'You are not authorized'));
     })
     .then(user => {
       req.user = user;
-      // next();
+      next();
     })
-    // .then(() => next())
-
-    // .then(() => next())
     .catch(err => next(err));
-    // .catch(err => res.send(err.message));
 };
+
+
+
+

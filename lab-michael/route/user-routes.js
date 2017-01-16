@@ -10,17 +10,13 @@ module.exports = (router) => {
     console.log(req.body);
     user.hashPassword(user.password)
       .then(user => user.save())
-      .then(user => res.json(user))
+      .then(user => res.json({_id: user.id, username: user.username, email: user.email}))
       .catch(err => res.send(err.message));
 
   });
 
   router.get('/users/:id', authMiddlewear, (req, res) => {
-    // delete req.user.password;
-    // res.json(req.user)  // This is after we refactor the
-    // console.log(req.params.id);
-    User.findById(req.params.id)
-      .then(user => res.json(user))
-      .catch(err => res.send(err.message));
+    res.json({_id: req.user._id, username: req.user.username, email: req.user.email});
+
   });
 };

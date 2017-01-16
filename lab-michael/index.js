@@ -2,7 +2,7 @@
 
 
 const express = require('express');
-const mongoURI = process.env.MONGO_URI || 'mongodb://localhost/users';
+const mongoURI = process.env.MONGO_URI || 'mongodb://localhost/auth-lab';
 const mongoose = require('mongoose');
 // const bcrypt = require('bcrypt');
 // const jsonParser = require('body-parser');
@@ -16,9 +16,9 @@ mongoose.connect(mongoURI);
 
 app.use(morgan('dev'));
 // app.use(jsonParser);
+module.exports = app;
 
 if (require.main === module) {
   app.listen(PORT, () => console.log(`server started on ${PORT}`));
 }
-module.exports = app;
 
