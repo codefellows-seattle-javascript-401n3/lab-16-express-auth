@@ -33,8 +33,9 @@ module.exports = (router) => {
   })
 
   router.post('/login', basicAuth, (req, res, next) => {
-    req.user.generateToken
-      .then(token => res.json(token))
+    req.user
+      .generateToken()
+      .then(token => res.json({token: token}))
       .catch(next)
   })
 

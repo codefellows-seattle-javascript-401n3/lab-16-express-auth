@@ -29,7 +29,6 @@ userSchema.methods.hashAndComparePassword = function(password) {
 
 userSchema.methods.generateToken = function () {
   return new Promise((resolve, reject) => {
-    console.log('Generating token')
     let payload = {
       user: this.username
     }

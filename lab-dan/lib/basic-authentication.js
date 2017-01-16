@@ -18,12 +18,13 @@ module.exports = (req, res, next) => {
       user.hashAndComparePassword(password)
         .then(result => {
           if(result) {
-            // 'log-in'
-            console.log('Logged in! Generating token!')
-            user
-              .generateToken()
-              .then(token => res.json({token: token}))
-              .catch(next)
+            req.user = user
+            next()
+            // 'log-in' and return token
+            // user
+            //   .generateToken()
+            //   .then(token => res.json({token: token}))
+            //   .catch(next)
           } else {
             next(createError(401, 'Invalid username or password'))
           }
