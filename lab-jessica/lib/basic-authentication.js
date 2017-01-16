@@ -1,28 +1,22 @@
 'use strict';
 
 const createError = require('http-errors');
-const User = require('../models/user.js');
 
 module.exports = (req, res, next) => {
   const auth = req.headers.authorization;
-
-  if(!auth) throw new Error('authorization headers expected');
+  if(!auth) return next(createError(401, 'authorization header required'));
 
   const base64String = auth.split('Basic ')[1];
+  if(!base64String) return next(createError(401, 'username and password required'));
+
   const [username, password] = new Buffer(base64String, 'base64').toString().split(':');
+  if(!username) return next(createError(401, 'username required'));
+  if(!password) return next(createError(401, 'password required'));
 
-  User.findOne({username: username})
-    .then(user => {
+  req.auth = {
+    username: username,
+    password: password
+  };
 
-      if(!user) {
-        return Promise.reject(createError(404, 'User not found in database'));
-      }
-
-      return user.comparePasswords(password);
-    })
-    .then(user => {
-      req.user = user;
-      next();
-    })
-    .catch(err => next(err));
+  next();
 };
