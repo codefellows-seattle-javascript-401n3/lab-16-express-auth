@@ -1,10 +1,11 @@
+let createError = require('http-errors');
 let User = require('../model/user');
 
 module.exports = (req, res, next) => {
   let auth = req.headers.authorization;
   console.log(auth);
   if (!auth) {
-    // throw error
+    throw new Error('Authorization Headers needed');
   }
   // extracting the base64 encoded string
   let base64String = auth.split('Basic')[1];
@@ -18,14 +19,24 @@ module.exports = (req, res, next) => {
   let password = userNamePasswordArray[1]
   */
   User.findOne({username: username})
+  // console.log(username)
     .then(user => {
-      console.log(user);
-      return user.comparePasswordHash(password);
+      if(!user) {
+        return Promise.reject(createError(404, 'Error: User Not Found'));
+      }
+      if(req.params.id === user._id) {
+        return user.comparePasswordHash(password);
+      }
+      return Promise.reject(createError(401, 'Error: User not Authorized'));
+      // console.log(user);
     })
-    .then(() => next())
-    .catch(err => res.send(err.message));
-      // if (user.password == password) {
-      //   console.log(user.password);
-      //   console.log(password);
-      //   console.log('logged in');
+    .then(user => {
+      req.user = user;
+      next();
+    })
+    // .then(() => next())
+
+    // .then(() => next())
+    .catch(err => next(err));
+    // .catch(err => res.send(err.message));
 };
