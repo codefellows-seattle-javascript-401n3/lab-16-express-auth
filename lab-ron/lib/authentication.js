@@ -5,9 +5,9 @@ let createError = require('http-errors');
 
 module.exports = (req, res, next) => {
   let auth = req.headers.authorization;
-  console.log('here is the auth: ', auth);
+  console.log('auth: ', auth);
   if(!auth) {
-    console.error('error', err);
+    res.json({msg: 'Error, no authorization...'});
   }
 
   let base64String = auth.split('Basic')[1];
@@ -22,12 +22,12 @@ module.exports = (req, res, next) => {
         next();
       }
       else{
-        (err => next(createError(404, 'error, user not found')));
+        (err => res.json({message: 'error in auth else block...'}));
         //LOG IN
       }
       next();
     })
-    .catch((err => next(createError(404, 'error, user not found'))));
+    .catch(err => res.json({message: 'Password Required...'}));
 };
 
 // let User = require('../models/user');
@@ -56,5 +56,5 @@ module.exports = (req, res, next) => {
 //         res.json({msg: 'error, wrong password.'});
 //       }
 //     })
-//     .catch(err => next(createError(404, 'error, user not found')));
+//     .catch(err => res.json({msg: 'error, not found.'}));
 // };

@@ -13,12 +13,12 @@ module.exports = (req, res, next) => {
     decoded = jwt.verify(token, process.env.SECRET || 'DEV');
   }
   catch(e) {
-    return res.status(401).json({msg: 'Authentication error'});
+    return res.status(401).json({msg: 'Authentication Error.'});
   }
   User.findById(decoded._id)
   .then(user => {
     req.user = user;
     next();
   })
-   .catch(err => next(createError(404, 'not found.')));
+   .catch(err => res.json({message: 'Authentication Error.'}));
 };

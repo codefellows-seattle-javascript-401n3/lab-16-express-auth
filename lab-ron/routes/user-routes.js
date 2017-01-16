@@ -1,7 +1,7 @@
 'use strict';
 
 let User = require('../models/user');
-// let authMiddlewear = require('../lib/authentication');
+let authMiddlewear = require('../lib/authentication');
 let jsonParser = require('body-parser').json();
 let createError = require('http-errors');
 
@@ -9,17 +9,15 @@ module.exports = (router) => {
   router.post('/users', jsonParser, (req, res, next) => {
     new User(req.body).save()
     .then(user => res.json(user))
-    .catch(err => res.json(err))
-    //.catch(err =>console.log(err) /*next(createError(404, 'error inside post route!'))*/);
+    .catch(err => res.json(err));
   });
 
-  router.get('/users/:id', (req, res, next) => {
-    User.findById(id )
+  router.get('/users/:id', authMiddlewear, (req, res, next) => {
+    User.findById(req.params.id)
     .then(user => res.json (user))
-    .catch(err => next(createError(404, 'error, user not found')));
-
-
+    .catch(err => res.json(err));
   });
+
   /*router.post('/signup', (req, res) => {
     User.create(req.body)
     .then(user => res.json(user))

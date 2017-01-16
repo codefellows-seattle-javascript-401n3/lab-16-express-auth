@@ -12,7 +12,7 @@ mongoose.Promise = Promise;
 let app = express();
 
 app.use(morgan('dev'));
-//app.use(authMiddlewear);
+app.use(authMiddlewear);
 require('./routes/user-routes.js')(app);
 
 app.listen(PORT, () => console.log(`server is running on ${PORT}`));
