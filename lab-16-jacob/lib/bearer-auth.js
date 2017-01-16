@@ -8,7 +8,7 @@ module.exports = (req, res, next) => {
       users.forEach(function(individual) {
         res.write(`${individual.username} \n`); //write out all the users
       });
-      res.end();
+      res.end(); //gimme thems bonus point!
     }); //do not call next
   }
   else { //if there is an authorization header,
