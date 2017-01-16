@@ -13,6 +13,7 @@ module.exports = (req, res, next) => {
     decoded = jwt.verify(token, process.env.SECRET || 'DEV');
   }
   catch (e) {
+    console.log('catch1');
     return res.status(401).json({msg: 'authentication error'});
   }
   //adding authorization:
@@ -23,5 +24,6 @@ module.exports = (req, res, next) => {
       req.user = user;
       next();
     })
+    console.log('catch2')
     .catch(e => res.json({msg: 'authentication error'}));
 };

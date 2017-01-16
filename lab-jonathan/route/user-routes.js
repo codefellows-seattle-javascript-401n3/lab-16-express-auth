@@ -19,7 +19,6 @@ module.exports = (router) => {
       req.body.owner = req.user._id;
       let guitar = new Guitar(req.body);
       guitar.save();
-      console.log('user', req.user);
       req.user.guitar = guitar;
       res.json(req.user.guitar);
       req.user.save();
@@ -37,10 +36,32 @@ module.exports = (router) => {
     } else {
       User.find({}).then(users => res.json(users));
     }
-  //   User.findById(req.params.id)
-  //   .then(user => res.json(user))
-  //   .catch(err => next(createError(404, 'Not Found')));
-  // });
+  });
 
+  router.put('/users', bearerAuth, jsonParser, (req, res) => {
+    if(req.user) {
+      User.update((req.body), function(err){
+        if(err) {
+          res.status(400).end('bad request');
+        } else {
+          res.status(200).json({msg: 'updated the user'})
+        }
+      });
+    } else{
+      if(err) {
+        console.log(err);
+        res.status(404).end('not found');
+      }
+    }
+  });
+
+  router.delete('/users', bearerAuth, (req, res) => {
+    if(req.user) {
+      delete req.user
+      .then( () => res.status(204).send())
+      .catch(err => createError(404, 'Not Found'));
+    } else {
+      res.json({msg: 'you are not authorized to delete'})
+    }
   });
 };

@@ -12,7 +12,6 @@ module.exports = (req, res, next) => {
 
   User.findOne({username: username})
   .then(user => {
-    // console.log('line 15 authMiddleware');
     if (!user){
       return next(createError(404, 'user not found'));
     }
