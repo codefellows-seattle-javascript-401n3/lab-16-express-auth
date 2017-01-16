@@ -25,7 +25,7 @@ userSchema.methods.comparePass = function(password) {
   return new Promise((resolve, reject) => {
     bcrypt.compare(password, this.password, (err, valid) => {
       if(err) {
-        reject(err);
+        return reject(err);
       } else {
         resolve(valid);
       }
@@ -33,7 +33,7 @@ userSchema.methods.comparePass = function(password) {
   });
 };
 
-userSchema.methods.generateToken = function() { //notes had password as a parameter 
-  return jwt.sign({id: this._id}, process.env.SECRET || 'DEV'); //can promisify this
+userSchema.methods.generateToken = function() {
+  return jwt.sign({id: this._id}, process.env.SECRET || 'DEV');
 };
 module.exports = mongoose.model('User', userSchema);

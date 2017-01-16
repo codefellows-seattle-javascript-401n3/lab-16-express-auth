@@ -9,11 +9,8 @@ module.exports = (req, res, next) => {
   let base64String = auth.split('Basic')[1];
   let [userName, passWord] = new Buffer(base64String, 'base64').toString().split(':');
   User.findOne({username: userName})
-  .then(user => {
-    console.log('about to compare passwords');
-    user.comparePass(passWord);
-  })
-  .then(()=> {
+  .then(user => user.comparePass(passWord))
+  .then(() => {
     console.log('logged in');
     next();
   })

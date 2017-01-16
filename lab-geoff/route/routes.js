@@ -2,13 +2,12 @@
 
 let jsonParser = require('body-parser').json();
 let User = require('../model/model.js');
-let basicAuth = require('../lib/auth.js');
+let basicAuth = require('../lib/basic-auth.js');
+let bearerAuth = require('../lib/bearer-auth.js');
 let Router = require('express').Router;
 let router = new Router();
 
 router.post('/users', jsonParser, (req, res) => {
-  //if auth sent -> generate token
-  //else do below
   let body = req.body;
   let user = new User(body);
   user.hashPass(user.password)
@@ -17,13 +16,18 @@ router.post('/users', jsonParser, (req, res) => {
     .catch();
 });
 
-router.get('/users/:id', basicAuth, function(req, res) {
-  console.log('/users/:id');
+router.post('/login/:id', basicAuth, (req, res) => {
   User.findById(req.params.id)
   .then(user => {
-    res.json(user);
-  })
-  .catch();
+    let token = user.generateToken();
+    console.log(token);
+    res.json(token);
+  });
+});
+
+router.get('/users/:id', bearerAuth, function(req, res) {
+  //remove password
+  res.json(req.user);
 });
 
 module.exports = router;
