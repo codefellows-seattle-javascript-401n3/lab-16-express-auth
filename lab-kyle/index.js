@@ -4,8 +4,6 @@ let express = require('express')
 let mongoose = require('mongoose')
 let morgan = require('morgan')
 
-let authMiddleware = require('./lib/auth')
-
 const PORT = process.env.PORT || 3000
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost/dev'
 
@@ -17,6 +15,7 @@ let app = express()
 app.use(morgan('dev'))
 
 require('./route/user-routes')(app)
+require('./route/auth-routes')(app)
 
 module.exports = app
 

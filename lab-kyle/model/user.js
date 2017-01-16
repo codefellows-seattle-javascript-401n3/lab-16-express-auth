@@ -22,7 +22,7 @@ userSchema.methods.hashPassword = function(password) {
   })
 }
 
-userSchema.methods.comparePasswordHash = function(password){
+userSchema.methods.comparePasswordHash = function(password) {
   return new Promise((resolve, reject) => {
     bcrypt.compare(password, this.password, (err, valid) => {
       if (err) return reject(err) // 500 error bcrypt failed
@@ -32,11 +32,12 @@ userSchema.methods.comparePasswordHash = function(password){
   })
 }
 
-userSchema.methods.generateToken = function(password) {
-  return new Promise((resolve, reject) => {
-    if (err) return reject(err)
-    let sign = jwt.sign({id: this._id}, process.env.SECRET || 'DEV')
-    resolve(sign)
-  })
+userSchema.methods.generateToken = function() {
+  // return new Promise((resolve, reject) => {
+  //   if (err) return reject(err)
+  //   jwt.sign({id: this._id}, process.env.SECRET || 'DEV')
+  //   resolve(this)
+  // })
+  return jwt.sign({id: this._id}, process.env.SECRET || 'DEV')
 }
 module.exports = mongoose.model('user', userSchema)

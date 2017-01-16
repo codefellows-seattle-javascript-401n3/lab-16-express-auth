@@ -2,6 +2,7 @@
 
 let User = require('../model/user')
 let authMiddleware = require('../lib/auth')
+let bearerAuth = require('../lib/bearer-auth')
 let jsonParser = require('body-parser').json()
 
 module.exports = (router) => {
@@ -14,13 +15,13 @@ module.exports = (router) => {
       .catch(() => res.status(400).send('invalid body'))
   })
 
-  router.get('/users/:id', authMiddleware, (req, res) => {
-    User.findById(req.params.id)
-      .then(user => {
-        delete req.user.password
-        res.json(user.username)
-      })
-      .catch(()=> res.status(404).send('not found'))
+  router.get('/users', bearerAuth, (req, res) => {
+    // if (req.user) {
+    // delete req.user.password
+    res.json(req.user)
+    // } else {
+    //   User.find({}).then(users => res.json(users))
+    // }
   })
 
 }
