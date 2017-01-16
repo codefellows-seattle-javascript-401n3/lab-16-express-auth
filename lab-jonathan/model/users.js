@@ -1,10 +1,12 @@
 let mongoose = require('mongoose');
 let bcrypt = require('bcrypt');
 let createError = require('http-errors');
+let jwt = require('jsonwebtoken');
 
 let userSchema = mongoose.Schema({
   username: {type: String, required: true, unique: true},
-  password: {type: String, required: true}
+  password: {type: String, required: true},
+  guitar: [{type: mongoose.Schema.ObjectId, ref: 'guitars'}],
 });
 
 userSchema.methods.hashPassword = function(password) {
@@ -25,6 +27,10 @@ userSchema.methods.comparePasswords = function(password) {
       resolve(this);
     });
   });
+};
+
+userSchema.methods.generateToken = function(password) {
+  return jwt.sign({id: this._id}, process.env.SECRET || 'DEV');
 };
 
 module.exports = mongoose.model('user', userSchema);

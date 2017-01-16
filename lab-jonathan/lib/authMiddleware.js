@@ -1,4 +1,4 @@
-let User = require('../model/model');
+let User = require('../model/users');
 let createError = require('http-errors');
 
 
@@ -12,17 +12,21 @@ module.exports = (req, res, next) => {
 
   User.findOne({username: username})
   .then(user => {
+    // console.log('line 15 authMiddleware');
     if (!user){
       return next(createError(404, 'user not found'));
     }
-    if(req.params.id == user._id) {
-      return user.comparePasswords(password);
-    }
-    return Promise.reject(createError(401, 'Not authorized'));
+    // if(req.params.id == user._id) {
+    // }
+    return user.comparePasswords(password);
+    // return Promise.reject(createError(401, 'Not authorized'));
   })
   .then(user => {
     req.user = user;
     next();
   })
-  .catch(err => next(err));
+  .catch(err => {
+    console.log(err)
+    next(createError(401, 'Not Authorized'))
+  });
 };

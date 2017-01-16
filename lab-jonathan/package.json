@@ -1,27 +1,28 @@
 {
-  "name": "lab16",
+  "name": "lab-jonathan",
   "version": "1.0.0",
-  "description": "lab 16 authentication",
+  "description": "lab 17 bearer auth",
   "main": "index.js",
   "directories": {
     "test": "test"
   },
-  "scripts": {
-    "test": "mocha"
-  },
-  "author": "jonathanD",
-  "license": "ISC",
   "dependencies": {
     "bcrypt": "^1.0.1",
     "body-parser": "^1.15.2",
+    "chai": "^3.5.0",
     "express": "^4.14.0",
     "http-errors": "^1.5.1",
+    "jsonwebtoken": "^7.2.1",
     "mongoose": "^4.7.5",
+    "morgan": "^1.7.0",
+    "superagent": "^3.3.1"
   },
   "devDependencies": {
-    "morgan": "^1.7.0",
-    "chai": "^3.5.0",
-    "mocha": "^3.2.0",
-    "superagent": "^3.3.1"
-  }
+    "mocha": "^3.2.0"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "author": "jd",
+  "license": "ISC"
 }
