@@ -1,7 +1,8 @@
 'use strict'
 
 const User = require('../model/user')
-const authentication = require('../lib/authentication')
+const bearerAuth = require('../lib/bearer-authentication')
+const basicAuth = require('../lib/basic-authentication')
 const jsonParser = require('body-parser').json()
 const createError = require('http-errors')
 
@@ -31,19 +32,27 @@ module.exports = (router) => {
       .catch(next)
   })
 
-  router.get('/users', authentication, (req, res, next) => {
+  router.post('/login', basicAuth, (req, res, next) => {
+    req.user.generateToken
+      .then(token => res.json(token))
+      .catch(next)
+  })
+
+  router.get('/users', bearerAuth, (req, res, next) => {
     if(req.user.username === 'Admin') {
       User
       .find()
       .select({password: 0})
       .then(users => res.json(users))
       .catch(next)
+    } else if (req.user) {
+      res.json(req.user)
     } else {
       next(createError(403, 'Unauthorized'))
     }
   })
 
-  router.get('/users/:user', authentication, (req, res, next) => {
+  router.get('/users/:user', bearerAuth, (req, res, next) => {
     if (req.user.username !== req.params.user || req.user.username === 'Admin') {
       return next(createError(403, 'Unauthorized'))
     }

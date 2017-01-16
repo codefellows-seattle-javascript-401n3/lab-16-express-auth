@@ -19,8 +19,11 @@ module.exports = (req, res, next) => {
         .then(result => {
           if(result) {
             // 'log-in'
-            req.user = user
-            next()
+            console.log('Logged in! Generating token!')
+            user
+              .generateToken()
+              .then(token => res.json({token: token}))
+              .catch(next)
           } else {
             next(createError(401, 'Invalid username or password'))
           }
