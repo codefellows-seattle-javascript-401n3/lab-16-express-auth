@@ -9,11 +9,16 @@ module.exports = (router) => {
   })
 
   router.post('/api/games', jsonParser, bearerAuth, (req, res) => {
-    console.log(req.body)
     let game = new Game(req.body)
     game.userID = req.user.id
     game.save()
-    res.json(game)
+      .then(game => res.json(game))
+      .catch(() => res.status(400).send('bad request'))
+  })
 
+  router.get('/api/games/:id', bearerAuth, (req, res) => {
+    Game.findById(req.params.id)
+      .then(game => res.json(game))
+      .catch(() => res.status(404).send('game not found'))
   })
 }
