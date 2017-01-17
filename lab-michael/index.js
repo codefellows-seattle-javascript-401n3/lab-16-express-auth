@@ -9,6 +9,7 @@ const mongoose = require('mongoose');
 const morgan = require('morgan');
 const app = express();
 require('./route/user-routes')(app);
+require('./route/auth-routes')(app);
 
 let PORT = process.env.PORT || 3000;
 mongoose.Promise = Promise;

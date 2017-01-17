@@ -3,6 +3,8 @@
 let mongoose = require('mongoose');
 let bcrypt = require('bcrypt');
 let createError = require('http-errors');
+let jwt = require('jsonwebtoken');
+
 
 let userSchema = mongoose.Schema({
   username: {type: String, required: true, unique: true},
@@ -30,11 +32,18 @@ userSchema.methods.comparePasswordHash = function(password){
   });
 };
 userSchema.methods.generateToken = function(password) {
+  return new Promise((resolve, reject) => {
+    jwt.sign({id: this._id}, process.env.SECRET || 'DEV', (err, token) => {
+      if (err) return reject(err);
+      if (!token) return reject(createError(401, 'need token'));
+      resolve(this);
+    });
+  });
   /* Can be promisified. After class work
   jwt.sign({id: this._id}, process.env.SECRET || 'DEV', (token) => {
   })
   */
-  return jwt.sign({id: this._id}, process.env.SECRET || 'DEV')
+  // return jwt.sign({id: this._id}, process.env.SECRET || 'DEV');
 };
 
 module.exports = mongoose.model('user', userSchema);
