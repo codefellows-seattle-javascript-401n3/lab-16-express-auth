@@ -4,7 +4,7 @@
 This authentication server connects to a mongoose database which stores
 usernames and passwords. It uses Basic authentication.
 
-POST ```/users```
+POST ```/register```
 Submit username and password to add users to db
 
 GET ```/users```

@@ -18,10 +18,9 @@ module.exports = (req, res, next) => {
         next(createError(401, 'Token Authentication Error!'))
       }
       User
-        .find({username: decoded.user})
+        .findOne({username: decoded.user})
         .select({password: 0})
         .then(user => {
-          if (!user.length) return next(createError(401, 'Token Authentication Error!'))
           req.user = user
           next()
         })
