@@ -21,4 +21,16 @@ module.exports = (router) => {
       .then(game => res.json(game))
       .catch(() => res.status(404).send('game not found'))
   })
+
+  router.put('/api/games/:id', jsonParser, bearerAuth, (req, res) => {
+    Game.findOneAndUpdate(req.params.id, req.body, {new: true})
+      .then(game => res.json(game))
+      .catch(() => res.status(404).send('game not found'))
+  })
+
+  router.delete('/api/games/:id', bearerAuth, (req, res) => {
+    Game.findOneAndRemove(req.params.id)
+      .then(game => res.json(game))
+      .catch(() => res.status(404).send('not found'))
+  })
 }
