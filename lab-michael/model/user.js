@@ -29,4 +29,12 @@ userSchema.methods.comparePasswordHash = function(password){
     });
   });
 };
+userSchema.methods.generateToken = function(password) {
+  /* Can be promisified. After class work
+  jwt.sign({id: this._id}, process.env.SECRET || 'DEV', (token) => {
+  })
+  */
+  return jwt.sign({id: this._id}, process.env.SECRET || 'DEV')
+};
+
 module.exports = mongoose.model('user', userSchema);
