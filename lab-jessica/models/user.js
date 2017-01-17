@@ -6,6 +6,8 @@ const createError = require('http-errors');
 const jwt = require('jsonwebtoken');
 const Schema = mongoose.Schema;
 
+const Course = require('./course.js');
+
 const userSchema = Schema({
   username: {type: String, required: true, unique: true},
   email: {type: String, require: true, unique: true},
@@ -37,4 +39,13 @@ userSchema.methods.generateToken = function() {
   return Promise.resolve(jwt.sign({id: this._id}, process.env.SECRET || 'DEV'));
 };
 
-module.exports = mongoose.model('user', userSchema);
+const User = module.exports = mongoose.model('user', userSchema);
+
+User.findByIdAndAddCourse = function(id, course) {
+  return new Course(course).save()
+    .then(course => {
+      this.tempCourse = course;
+      return User.findOneAndUpdate({_id: id}, {$push: {courses: course._id}});
+    })
+    .then(() => this.tempCourse);
+};

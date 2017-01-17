@@ -8,6 +8,7 @@ const jsonParser = require('body-parser').json();
 const app = express();
 
 // app modules
+const errorMiddlware = require('./lib/error-middleware.js');
 const userRoutes = require('./routes/user-routes.js');
 const authRoutes = require('./routes/auth-routes.js');
 const courseRoutes = require('./routes/course-routes.js');
@@ -25,6 +26,7 @@ app.use(jsonParser);
 app.use(userRoutes);
 app.use(authRoutes);
 app.use('/api', courseRoutes);
+app.use(errorMiddlware);
 
 module.exports = app;
 
