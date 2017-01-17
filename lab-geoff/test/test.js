@@ -51,11 +51,12 @@ describe('.routes.js', function() {
   describe('/users/:id()', function() {
     it('should return the logged in user', function(done) {
       request.get(`http://localhost:3000/users/${id}`)
-      .authBearer(token)
+      .authBearer(JSON.parse(token))
       .end((err, res) => {
         if(err) {
           return done(err);
         } else {
+          console.log(res.body);
           expect(res.status).to.equal(200);
           done();
         }
@@ -63,6 +64,7 @@ describe('.routes.js', function() {
     });
   });
   after(function(done) {
+    console.log(id);
     User.findByIdAndRemove(id, (err, doc) => {
       if(err) {
         return console.error(err);

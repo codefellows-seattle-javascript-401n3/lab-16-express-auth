@@ -18,9 +18,9 @@ module.exports = (req, res, next) => {
   }
   User.findById(decoded.id)
   .then(user => {
-    // remove password from user
     console.log('bearerAuth');
     req.user = user;
+    delete req.user.password;
     next();
   })
   .catch(e => {

@@ -16,5 +16,6 @@ module.exports = (req, res, next) => {
   })
   .catch(()=> {
     console.log('not logged in');
+    res.status(401).json({msg:'Unauthorized'});
   });
 };
