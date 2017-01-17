@@ -13,8 +13,8 @@ module.exports = (req, res, next) => {
     console.log(decoded);
   }
   catch(e) {
-    //return Authorization Error response
     console.log('error with jwt.verify');
+    return res.status(401).json({msg: 'unauthorized'});////
   }
   User.findById(decoded.id)
   .then(user => {
@@ -25,6 +25,6 @@ module.exports = (req, res, next) => {
   })
   .catch(e => {
     console.error(e);
-    //return Authorization Error response
+    return res.status(404).json({msg: 'not found'});
   });
 };
