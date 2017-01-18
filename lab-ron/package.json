@@ -16,6 +16,8 @@
     "bcrypt": "^1.0.1",
     "body-parser": "^1.15.2",
     "express": "^4.14.0",
+    "gulp-eslint": "^3.0.1",
+    "gulp-mocha": "^3.0.1",
     "http-errors": "^1.5.1",
     "mongoose": "^4.7.6",
     "morgan": "^1.7.0"
