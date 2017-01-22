@@ -2,13 +2,16 @@
 ## By Dan Peters
 
 This authentication server connects to a mongoose database which stores
-usernames and passwords. It uses Basic authentication.
+usernames and passwords. It uses Basic authentication and Bearer tokens.
 
 POST ```/register```
-Submit username and password to add users to db
+Submit username and password in body to add users to db
+
+POST ```/login```
+Submit user and pass via basic authentication. Returns a token.
 
 GET ```/users```
-Must be an authorized admin to see all users
+Must be an authorized admin to see all users, otherwise returns just the user's info
 
 GET ```/users/[username]```
-Send with basic authentication to view specific user data
+Send with basic authentication to view specific user data. Can only view users as authorized.
