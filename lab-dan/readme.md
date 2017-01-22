@@ -11,7 +11,7 @@ POST ```/login```
 Submit user and pass via basic authentication. Returns a token.
 
 GET ```/users```
-Must be an authorized admin to see all users, otherwise returns just the user's info
+Must use Bearer token. Must be an authorized admin to see all users, otherwise returns just the user's info
 
 GET ```/users/[username]```
-Send with basic authentication to view specific user data. Can only view users as authorized.
+Must use Bearer token. Can only view users as authorized.
