@@ -21,6 +21,7 @@ module.exports = (req, res, next) => {
         .findOne({username: decoded.user})
         .select({password: 0})
         .then(user => {
+          if(!user) return next(createError(403, 'Unauthorized'))
           req.user = user
           next()
         })

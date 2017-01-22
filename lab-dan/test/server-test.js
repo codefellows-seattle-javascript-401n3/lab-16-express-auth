@@ -10,20 +10,24 @@ chai.use(chaiHttp)
 
 let server = undefined
 
-let username = 'test'
+let username = 'tester'
 let password = 'test'
+let token = ''
 
 describe('authentication app', function() {
+
   before(function(done) {
     server = app.listen(3000, () => {
       console.log('test server started on port 3000')
       done()
     })
   })
-  describe('POST /users', function() {
+
+  describe('POST /register', function() {
     it('should post and return a username but no password', function(done) {
-      chai.request(app)
-        .post('/users')
+      chai
+        .request(app)
+        .post('/register')
         .send({username: username, password: password})
         .end(function(err, res) {
           let data = JSON.parse(res.text)
@@ -36,8 +40,9 @@ describe('authentication app', function() {
     })
 
     it('should fail if sent the same username', function(done) {
-      chai.request(app)
-        .post('/users')
+      chai
+        .request(app)
+        .post('/register')
         .send({username: username, password: password})
         .end(function(err, res) {
           expect(res).to.have.status(500)
@@ -46,24 +51,53 @@ describe('authentication app', function() {
     })
 
     it('should fail if sent incomplete data', function(done) {
-      chai.request(app)
-        .post('/users')
+      chai
+        .request(app)
+        .post('/register')
         .send({password: password})
         .end(function(err, res) {
           expect(res).to.have.status(400)
           done()
         })
     })
+  })
 
+  describe('POST /login', function() {
+    it('should fail if wrong credentials', function(done) {
+      chai
+        .request(app)
+        .post('/login')
+        .auth(username, 'badpass')
+        .end(function(err, res) {
+          expect(res).to.have.status(401)
+          done()
+        })
+    })
+    it('should post and return a token', function(done) {
+      chai
+        .request(app)
+        .post('/login')
+        .auth(username, password)
+        .end(function(err, res) {
+          expect(err).to.be.null
+          expect(res.type).to.equal('application/json')
+          expect(res).to.have.status(200)
+          token = res.body.token
+          done()
+        })
+    })
   })
 
   describe('GET /users', function() {
-    it('should fail for any user other than Admin', function(done) {
-      chai.request(app)
+    it('should only return user\'s info for any user other than Admin', function(done) {
+      chai
+        .request(app)
         .get('/users')
-        .auth(username, password)
+        .set('authorization', `Bearer ${token}`)
         .end(function(err, res) {
-          expect(res).to.have.status(403)
+          expect(res).to.have.status(200)
+          // expect(res.body).to.not.be.array
+          // expect(res.body.username).to.equal(username)
           done()
         })
     })
@@ -71,9 +105,10 @@ describe('authentication app', function() {
 
   describe('GET /users/:userid', function() {
     it('should return user info but no password', function(done) {
-      chai.request(app)
+      chai
+        .request(app)
         .get(`/users/${username}`)
-        .auth(username, password)
+        .set('Authorization', `Bearer ${token}`)
         .end(function(err, res) {
           let data = JSON.parse(res.text)
           expect(res).to.have.status(200)
@@ -84,9 +119,10 @@ describe('authentication app', function() {
     })
 
     it('should fail if not authorized user', function(done) {
-      chai.request(app)
+      chai
+        .request(app)
         .get('/users/Admin')
-        .auth(username, password)
+        .set('Authorization', `Bearer ${token}`)
         .end(function(err, res) {
           expect(res).to.have.status(403)
           done()
@@ -94,21 +130,13 @@ describe('authentication app', function() {
     })
 
     it('should fail if wrong credentials', function(done) {
-      chai.request(app)
+      let fakeToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoidGVzdCIsImlhdCI6MTQ4NTA0MzAxMiwiZXhwIjoxNDg1MTI5NDEyfQ.yuoLmDam8mrW6YAkleheEONWCmUEjFGwdEZ2-sJZZDQ'
+      chai
+        .request(app)
         .get(`/users/${username}`)
-        .auth('baduser', 'badpass')
+        .set('Authorization', `Bearer ${fakeToken}`)
         .end(function(err, res) {
-          expect(res).to.have.status(401)
-          done()
-        })
-    })
-
-    it('should fail if wrong credentials', function(done) {
-      chai.request(app)
-        .get(`/users/${username}`)
-        .auth(username, 'badpass')
-        .end(function(err, res) {
-          expect(res).to.have.status(401)
+          expect(res).to.have.status(403)
           done()
         })
     })

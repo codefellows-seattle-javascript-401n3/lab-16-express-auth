@@ -46,10 +46,10 @@ module.exports = (router) => {
     if(req.user.username.toLowerCase() === 'admin') {
       console.log('returning admin level details')
       User
-      .find()
-      .select({password: 0})
-      .then(users => res.json(users))
-      .catch(next)
+        .find()
+        .select({password: 0})
+        .then(users => res.json(users))
+        .catch(next)
     } else if (req.user) {
       console.log('returning just the user')
       res.json(req.user)
