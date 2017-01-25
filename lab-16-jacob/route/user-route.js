@@ -1,25 +1,24 @@
 'use strict';
 
 let bearerAuth = require('../lib/bearer-auth');
-let authMiddleWare = require('../lib/authentication');
+// let authMiddleWare = require('../lib/authentication');
 let User = require('../model/user');
 let jsonParser = require('body-parser').json();
 
 
 module.exports = (router) => {
-  router.post('/users', jsonParser, (req, res) => {
+  router.post('/signup', jsonParser, (req, res) => {
     let user = new User(req.body);
     user.hashPassword(user.password)
-    .then(user => {
-      user.save(); //saves with hashed password into DB
-      res.json({username: user.username, id: user._id});
-    })
+    .then(user => user.save())
+    .then(user => user.generateToken())
+    .then(token => res.json(token))
     .catch(() => {
       res.status(401).end('invalid body');
     });
   });
-  router.get('/users/:id', bearerAuth,  (req, res) => { //because of authMiddleWare being called, we will have the req.user property!
-    User.findById(req.params.id)
+  router.get('/users', bearerAuth,  (req, res) => { //because of authMiddleWare being called, we will have the req.user property!
+    User.findById(req.user._id)
     .then((user) => {
       res.json(user);
     })
@@ -29,8 +28,8 @@ module.exports = (router) => {
       }
     });
   });
-  router.put('/users/:id', bearerAuth, jsonParser, (req, res) => {
-    User.findById(req.params.id)
+  router.put('/users/', bearerAuth, jsonParser, (req, res) => {
+    User.findById(req.user._id)
     .then(function(user) {
       user.update((req.body), function(err) {
         if (err) {
@@ -47,8 +46,8 @@ module.exports = (router) => {
       }
     });
   });
-  router.delete('/users/:id', authMiddleWare, (req, res) => {
-    User.findById(req.params.id)
+  router.delete('/users/', bearerAuth, (req, res) => {
+    User.findById(req.user._id)
     .then((user) => {
       user.remove({_id: user._id}, function(err) {
         if(err) {
