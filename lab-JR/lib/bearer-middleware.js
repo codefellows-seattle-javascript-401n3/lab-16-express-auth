@@ -30,8 +30,8 @@ module.exports = (req, res, next) => {
   jwt.verify(token, process.env.SECRET || 'DEV', (err, decodedToken) => {
     if(err) return next(createError(500, 'server error'));
     User.findOne({findHashedToken: decodedToken})
-    .then(user => {
-      req.user = user;
+    .then(User => {
+      req.user = User;
       next();
     })
     .catch(() => {
