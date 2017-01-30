@@ -46,7 +46,7 @@ module.exports = (router) => {
       }
     });
   });
-  router.delete('/users/', bearerAuth, (req, res) => {
+  router.delete('/users', bearerAuth, (req, res) => {
     User.findById(req.user._id)
     .then((user) => {
       user.remove({_id: user._id}, function(err) {

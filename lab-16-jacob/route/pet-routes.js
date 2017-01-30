@@ -5,26 +5,50 @@ let bearerAuth = require('../lib/bearer-auth');
 let User = require('../model/user');
 let jsonParser = require('body-parser').json();
 let Pet = require('../model/pets');
+// let createError = require('http-errors');
 
 module.exports = (router) => {
   router.post('/users/pets', bearerAuth, jsonParser, (req, res) => {
-    new Pet(req.body).save() //saves with hashed password into DB
-    .then(pet => pet.update({owner: req.user.username}))
-    .then(pet => res.json(pet))
+    new Pet(req.body).save()
+    .then(pet => {
+      let petID = pet._id; //updates the user to add on the pet ID
+      User.findOneAndUpdate({_id: req.user._id}, {pets: [req.user.pets, pet._id]}, {new: false})
+      .then(user => { //updates the new pet to make the authenticated user it's owner
+        Pet.findOneAndUpdate({_id: petID}, { $set: {owner: user.username}}, {new: true})
+        .then(pet => res.json(pet));
+      });
+    })
     .catch((err) => {
       console.log(err);
       res.status(401).end('invalid body');
     });
   });
   router.get('/users/pets', bearerAuth, (req, res) => {
-    User.findById(req.user)
+    User.findById(req.user._id)
     .populate('pets')
     .exec(function(err, user) {
       res.json(user.pets);
     });
   });
-  router.post('/users/pets', bearerAuth, (req, res) => {
-    console.log(req.user);
+  router.put('/users/pets', bearerAuth, (req, res) => {
+    User.findById(req.user._id)
+    .then(user => user.update({pets:[req.user.pets]}))
+    .then(user => res.json(user));
     res.end();
+  });
+  router.delete('/users/pets/:id', bearerAuth, (req, res) => {
+    Pet.findById(req.params.id)
+    .then(pet => {
+      if(req.user.username === pet.owner) {
+        pet.remove({_id: pet._id}, function(err) {
+          if(err) {
+            res.status(404).end('not found');
+          }
+          res.status(204).end();
+        });
+      } else {
+        res.status(401).end('Not Authorized');
+      }
+    });
   });
 };

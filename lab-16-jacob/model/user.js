@@ -9,7 +9,7 @@ let userSchema = mongoose.Schema({
   username: {type: String, required: true, unique: true},
   password: {type: String, required: true},
   email: {type: String, required: true},
-  pets: [{type: mongoose.Schema.Types.ObjectId, ref: 'pets'}]
+  pets: [{type: String, ref: 'pets'}]
 });
 
 //new way to set proper methods
