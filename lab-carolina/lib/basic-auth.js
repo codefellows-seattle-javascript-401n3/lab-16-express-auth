@@ -1,30 +1,27 @@
 'use strict';
 
-const cors = require('cors');
-const dotenv = require('dotenv');
-const morgan = require('morgan');
-const express = require('express');
-const Promise = require('bluebird');
-const mongoose = require('mongoose');
+const createError = require('http-errors');
 
-const authRouter = require('./route/auth-route.js');
-const errorMiddleware = require('./lib/error-middleware.js');
+module.exports = function(req, res, next){
 
-dotenv.load();
+  var authHeader = req.headers.authorization;
+  if (!authHeader)
+    return next(createError(401, 'requires authorization header'));
 
-mongoose.connect(process.env.MONGODB_URI);
+  let base64String = authHeader.split('Basic ')[1];
+  if (!base64String)
+    return next(createError(401, 'require username and password'));
 
-const PORT = process.env.PORT;
-const app = express();
+  let utf8String = new Buffer(base64String, 'base64').toString();
+  let authArray = utf8String.split(':');
+  req.auth = {
+    username: authArray[0],
+    password: authArray[1],
+  };
 
-app.use(cors());
-app.use(morgan('dev'));
-
-app.use(authRouter);
-app.use(errorMiddleware);
-
-const server = module.exports = app.listen(PORT , () => {
-  console.log(`server running on port ${PORT}`);
-});
-
-server.isRunning = true;
+  if(!req.auth.username)
+    return next(createError(401, 'basic auth requires username'));
+  if(!req.auth.password)
+    return next(createError(401, 'basic auth requires password'));
+  next();
+};
