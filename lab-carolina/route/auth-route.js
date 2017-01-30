@@ -30,3 +30,4 @@ authRouter.get('/api/login', basicAuth, function(req, res, next){
   .then( token => res.send(token))
   .catch(next);
 });
+  

@@ -1,17 +1,14 @@
 'use strict';
 
-// npm
 const expect = require('chai').expect;
 const request = require('superagent');
 const mongoose = require('mongoose');
 const Promise = require('bluebird');
 
-// app
 const server = require('../server.js');
 const User = require('../model/user.js');
 const Pet = require('../model/pet.js');
 
-// const
 const url = `http://localhost:${process.env.PORT}`;
 const exampleUser = {
   username: 'mars',
@@ -24,7 +21,6 @@ const examplePet = {
   breed: 'Chihuahua'
 };
 
-// config
 mongoose.Promise = Promise;
 
 describe('testing pet route', function(){

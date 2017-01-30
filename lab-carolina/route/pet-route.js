@@ -45,3 +45,4 @@ petRouter.delete('/api/pet/:id', bearerAuth, function(req, res, next) {
   .then(() => res.status(204).send())
   .catch(err => next(createError(404, err.message)));
 });
+  
