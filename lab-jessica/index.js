@@ -18,7 +18,7 @@ const PORT = process.env.PORT || 3000;
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost/lab17';
 
 mongoose.connect(MONGODB_URI);
-mongoose.Promise = Promise;
+mongoose.Promise = require('bluebird');
 
 // app middleware
 app.use(morgan('dev'));

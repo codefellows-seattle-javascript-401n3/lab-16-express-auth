@@ -23,7 +23,8 @@
   },
   "homepage": "https://github.com/jessicamvs/lab-16-express-auth#readme",
   "dependencies": {
-    "bcrypt": "^1.0.2",
+    "bcryptjs": "^2.4.0",
+    "bluebird": "^3.4.7",
     "body-parser": "^1.15.2",
     "express": "^4.14.0",
     "http-errors": "^1.5.1",

@@ -1,7 +1,7 @@
 'use strict';
 
 const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const createError = require('http-errors');
 const jwt = require('jsonwebtoken');
 const Schema = mongoose.Schema;
@@ -41,11 +41,13 @@ userSchema.methods.generateToken = function() {
 
 const User = module.exports = mongoose.model('user', userSchema);
 
-User.findByIdAndAddCourse = function(id, course) {
+User.findByIdAndAddCourse = function(user, course) {
+
   return new Course(course).save()
     .then(course => {
       this.tempCourse = course;
-      return User.findOneAndUpdate({_id: id}, {$push: {courses: course._id}});
+      user.courses.push(course._id);
+      return user.save();
     })
     .then(() => this.tempCourse);
 };

@@ -10,8 +10,8 @@ const router = module.exports = new Router();
 
 router.get('/users', bearerAuth, (req, res) => {
   if (req.user) {
-    res.json({username: req.user.username, email: req.user.email, _id: req.user._id});
-  } else {
-    User.find({}).then(users => res.json(users));
+    req.user.password = null;
+    return res.json(req.user);
   }
+  User.find({}).then(users => res.json(users));
 });
