@@ -17,9 +17,9 @@
     "express": "^4.14.0",
     "http-errors": "^1.5.1",
     "mongoose": "^4.7.5",
-    "morgan": "^1.7.0"
   },
   "devDependencies": {
+    "morgan": "^1.7.0",
     "chai": "^3.5.0",
     "mocha": "^3.2.0",
     "superagent": "^3.3.1"
