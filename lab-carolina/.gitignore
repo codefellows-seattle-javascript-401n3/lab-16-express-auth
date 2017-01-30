@@ -15,7 +15,6 @@ db
 # Linux trash folder which might appear on any partition or disk
 .Trash-*
 
-
 ### Node ###
 # Logs
 logs
@@ -96,3 +95,6 @@ Session.vim
 *~
 # auto-generated tag files
 tags
+
+#dotenv
+.env
