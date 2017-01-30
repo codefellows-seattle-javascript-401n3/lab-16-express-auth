@@ -17,8 +17,7 @@ authRouter.post('/api/signup', jsonParser, function(req, res, next){
   let user = new User(req.body);
 
   user.generatePasswordHash(password)
-  .then( user => user.save()) 
-  .then( user => user.generateToken())
+  .then( user => user.save())
   .then( token => res.send(token))
   .catch(next);
 });
