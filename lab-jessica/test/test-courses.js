@@ -135,6 +135,109 @@ describe('testing auth routes', function() {
     });
   });
 
+  describe('testing PUT /api/courses', () => {
+    before(done => {
+      new Course(exampleCourse).save()
+      .then(course => {
+        this.tempCourse = course;
+        done();
+      })
+      .catch(done);
+    });
+
+    after(done => {
+      Course.remove({})
+      .then(() => done())
+      .catch(done);
+    });
+
+    it('should return 200 with updated course', done => {
+      request.put(`localhost:3000/api/courses/${this.tempCourse._id}`)
+      .set('Authorization', 'Bearer ' + this.token)
+      .send({course: 'STUFF'})
+      .end((err, res) => {
+        console.log('THIS IS BOD', res.body);
+        expect(res.status).to.equal(200);
+        expect(res.body.course).to.equal('STUFF');
+        expect(res.body.courseCode).to.equal('MATH 151');
+        done();
+      });
+    });
+
+    it('should return 401 and unauthorized if no token provided', done => {
+      request.put(`localhost:3000/api/courses/${this.tempCourse._id}`)
+      .end((err, res) => {
+        expect(res.status).to.equal(401);
+        done();
+      });
+    });
+
+    it('should return 400 and bad request when provided invalid body', done => {
+      request.put(`localhost:3000/api/courses/${this.tempCourse._id}`)
+      .set('Authorization', 'Bearer ' + this.token)
+      .send('LOL')
+      .end((err, res) => {
+        expect(res.status).to.equal(400);
+        done();
+      });
+    });
+
+    it('should return 404 and not found if invalid id is provided by authenticated user', done => {
+      request.get('localhost:3000/api/courses/9')
+      .set('Authorization', 'Bearer ' + this.token)
+      .end((err, res) => {
+        expect(res.status).to.equal(404);
+        done();
+      });
+    });
+
+  });
+
+  describe('testing DELETE /api/courses', () => {
+
+    before(done => {
+      new Course(exampleCourse).save()
+      .then(course => {
+        this.tempCourse = course;
+        done();
+      })
+      .catch(done);
+    });
+
+    after(done => {
+      Course.remove({})
+      .then(() => done())
+      .catch(done);
+    });
+
+    it('should return 204', done => {
+      request.delete(`localhost:3000/api/courses/${this.tempCourse._id}`)
+      .set('Authorization', 'Bearer ' + this.token)
+      .end((err, res) => {
+        expect(res.status).to.equal(204);
+        done();
+      });
+    });
+
+    it('should return 404 if invalid id is provided', done => {
+      request.delete('localhost:3000/api/courses/9')
+      .set('Authorization', 'Bearer ' + this.token)
+      .end((err, res) => {
+        expect(res.status).to.equal(404);
+        done();
+      });
+    });
+
+    it('should return 401 if no token provided', done => {
+      request.put(`localhost:3000/api/courses/${this.tempCourse._id}`)
+      .end((err, res) => {
+        expect(res.status).to.equal(401);
+        done();
+      });
+    });
+
+  });
+
   after(function(done) {
     server.close(() => console.log('server closed after user tests'));
     done();
