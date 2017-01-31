@@ -5,7 +5,7 @@ let bearerAuth = require('../lib/bearer-auth');
 let User = require('../model/user');
 let jsonParser = require('body-parser').json();
 let Pet = require('../model/pets');
-// let createError = require('http-errors');
+let createError = require('http-errors');
 
 module.exports = (router) => {
   router.post('/users/pets', bearerAuth, jsonParser, (req, res) => {
@@ -20,7 +20,7 @@ module.exports = (router) => {
     })
     .catch((err) => {
       console.log(err);
-      res.status(401).end('invalid body');
+      res.status(400).end('invalid body');
     });
   });
   router.get('/users/pets', bearerAuth, (req, res) => {
@@ -30,13 +30,23 @@ module.exports = (router) => {
       res.json(user.pets);
     });
   });
-  router.put('/users/pets', bearerAuth, (req, res) => {
-    User.findById(req.user._id)
-    .then(user => user.update({pets:[req.user.pets]}))
-    .then(user => res.json(user));
-    res.end();
+  router.put('/users/pets/:id', bearerAuth, jsonParser, (req, res, next) => {
+    Pet.findById(req.params.id)
+    .then(pet => {
+      if(req.user.username === pet.owner) {
+        pet.update(req.body, function(err) {
+          if (err) {
+            res.status(400).end('bad request');
+          } else {
+            res.status(200).json(pet);
+          }
+        });
+      } else {
+        return next(createError(401));
+      }
+    });
   });
-  router.delete('/users/pets/:id', bearerAuth, (req, res) => {
+  router.delete('/users/pets/:id', bearerAuth, (req, res, next) => {
     Pet.findById(req.params.id)
     .then(pet => {
       if(req.user.username === pet.owner) {
@@ -47,7 +57,7 @@ module.exports = (router) => {
           res.status(204).end();
         });
       } else {
-        res.status(401).end('Not Authorized');
+        return next(createError(401));
       }
     });
   });
