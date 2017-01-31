@@ -32,7 +32,7 @@ router.get('/courses', (req, res, next) => {
 
 router.put('/courses/:id', bearerAuth, (req, res, next) => {
   if(!req.body.course && !req.body.courseCode) return next(createError(400));
-  
+
   Course.findOneAndUpdate({_id: req.params.id}, req.body, {new: true})
     .then(course => res.json(course))
     .catch(next);

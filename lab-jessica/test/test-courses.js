@@ -19,10 +19,10 @@ const exampleCourse = {
   courseCode: 'MATH 151'
 };
 
-describe('testing auth routes', function() {
+describe('testing course routes', function() {
   let server;
   before(done => {
-    server = app.listen(PORT, () => console.log('started tests from auth tests'));
+    server = app.listen(PORT, () => console.log('started tests from course tests'));
 
     new User(exampleUser).save()
     .then(user => user.generateToken())
@@ -156,7 +156,6 @@ describe('testing auth routes', function() {
       .set('Authorization', 'Bearer ' + this.token)
       .send({course: 'STUFF'})
       .end((err, res) => {
-        console.log('THIS IS BOD', res.body);
         expect(res.status).to.equal(200);
         expect(res.body.course).to.equal('STUFF');
         expect(res.body.courseCode).to.equal('MATH 151');
@@ -239,7 +238,7 @@ describe('testing auth routes', function() {
   });
 
   after(function(done) {
-    server.close(() => console.log('server closed after user tests'));
+    server.close(() => console.log('server closed after course tests'));
     done();
   });
 

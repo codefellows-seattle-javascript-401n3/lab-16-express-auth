@@ -52,22 +52,22 @@ describe('testing auth routes', function() {
       });
     });
 
-    // it('should respond 400 if invalid body provided', function(done) {
-    //   request.post('localhost:3000/signup')
-    //   .send('')
-    //   .end((err, res) => {
-    //     expect(res.status).to.equal(400);
-    //     done();
-    //   });
-    // });
-    //
-    // it('should return 400 if no body provided', function(done) {
-    //   request.post('localhost:3000/signup')
-    //   .end((err, res) => {
-    //     expect(res.status).to.equal(400);
-    //     done();
-    //   });
-    // });
+    it('should respond 400 if invalid body provided', function(done) {
+      request.post('localhost:3000/signup')
+      .send('')
+      .end((err, res) => {
+        expect(res.status).to.equal(400);
+        done();
+      });
+    });
+
+    it('should return 400 if no body provided', function(done) {
+      request.post('localhost:3000/signup')
+      .end((err, res) => {
+        expect(res.status).to.equal(400);
+        done();
+      });
+    });
 
   });
 
