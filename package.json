@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "chai": "^3.5.0",
+    "superagent": "^3.4.1"
+  }
+}

@@ -15,4 +15,8 @@ let app = express();
 app.use(morgan('dev'));
 require('./routes/user-routes.js')(app);
 
-app.listen(PORT, () => console.log(`server is running on ${PORT}`));
+if(require.main === module) {
+  app.listen(PORT, () => console.log(`server is running on ${PORT}`));
+}
+
+module.exports = app;
