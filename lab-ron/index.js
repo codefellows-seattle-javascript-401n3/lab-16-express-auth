@@ -10,8 +10,7 @@ mongoose.connect('mongodb://localhost/dev');
 mongoose.Promise = Promise;
 
 let app = express();
-//why does the below code break the verb methods?
-// app.use(authMiddlewear);
+app.use(authMiddlewear);
 app.use(morgan('dev'));
 require('./routes/user-routes.js')(app);
 

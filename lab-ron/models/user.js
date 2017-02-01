@@ -1,15 +1,6 @@
 'use strict';
 
 let mongoose = require('mongoose');
-
-let userSchema = mongoose.Schema({
-  username: {type: String, required: true, unique: true},
-  password: {type: String, required: true}
-});
-
-module.exports = mongoose.model('user', userSchema);
-
-let mongoose = require('mongoose');
 let bcrypt = require('bcrypt');
 let jwt = require('jsonwebtoken');
 
@@ -45,3 +36,5 @@ userSchema.methods.comparePassword = function(password) {
 userSchema.methods.generateToken = function(password) {
   return jwt.sign({id: this._id}, process.env.SECRET || 'DEV', (token) );
 };
+
+module.exports = mongoose.model('user', userSchema);
