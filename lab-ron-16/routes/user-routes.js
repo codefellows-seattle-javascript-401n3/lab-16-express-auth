@@ -10,7 +10,10 @@ module.exports = (router) => {
   router.post('/users', jsonParser, (req, res) => {
     let user = new User(req.body);
     user.hashPassword(user.password)
-    .then(user => user.save())
+    .then(user => {
+      user.save()
+      res.json({username: user.username, id: user._id});
+    })
     .then(user => res.json({username: user.username, email: user.email, _id: user._id}))
     .catch(err => res.json({message: 'error in post route...'}));
   });
@@ -18,11 +21,8 @@ module.exports = (router) => {
   router.get('/users/:id', authMiddlewear, (req, res) => {
     User.findById(req.params.id)
     .then(user => res.json (user))
-    .catch(err => res.json({message: 'error in get route...'}));
+    .catch(err => {
+      res.json({message: 'error in get route...'})
+    });
   });
 };
-
-// app.post('/login', authMiddlewear, (req, res) => {
-//   console.log(req.headers.authorization);
-//   res.end();
-// });

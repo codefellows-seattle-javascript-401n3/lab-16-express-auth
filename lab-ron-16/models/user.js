@@ -29,8 +29,5 @@ userSchema.methods.comparePassword = function(password) {
   });
 };
 
-// userSchema.methods.generateToken = function(password) {
-//   return jwt.sign({id: this._id}, process.env.SECRET || 'DEV', (token) );
-// };
 
 module.exports = mongoose.model('user', userSchema);
