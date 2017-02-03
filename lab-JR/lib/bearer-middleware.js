@@ -2,7 +2,7 @@
 
 const jwt = require('jsonwebtoken');
 const User = require('../model/user')
-const createError = require('https-errors');
+const createError = require('http-errors');
 
 // module.exports = (req, res, next) => {
 //   let decoded = null;

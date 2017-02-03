@@ -6,14 +6,25 @@ const Promise = require('bluebird');
 const app = express();
 
 const userRoute = require('./route/user-route');
+const recipeRoute = require('./route/recipe-route');
 
 const PORT = process.env.PORT || 3000;
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://heroku_bl29d6v3:3sino9396o2ertmj2fmirp4118@ds117859.mlab.com:17859/heroku_bl29d6v3';
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost/lab17Tests';
 
 mongoose.Promise = Promise;//tells mongoose to promisify everything
 mongoose.connect(MONGODB_URI);
 
 app.use(userRoute);
+app.use(recipeRoute);
+app.use(function(err, req, res, next){
+  if(!err.status) {
+    return res.status(500).send('server error');
+  }
+  else {
+    res.status(err.status).send(err.message).end();
+    next();
+  }
+}); //can take out since we don't have "next" built out in our routes;
 
 app.listen(PORT, () => {
   console.log(`server listening on ${PORT}`);
