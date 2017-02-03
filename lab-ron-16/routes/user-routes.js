@@ -20,7 +20,7 @@ module.exports = (router) => {
 
   router.get('/users/:id', authMiddlewear, (req, res) => {
     User.findById(req.params.id)
-    .then(user => res.json (user))
+    .then(user => res.json ({username: user.username, email: user.email, _id: user._id}))
     .catch(err => {
       res.json({message: 'error in get route...'})
     });

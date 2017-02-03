@@ -10,9 +10,12 @@ mongoose.connect('mongodb://localhost/dev');
 mongoose.Promise = Promise;
 
 let app = express();
-//why does the below code break the verb methods?
 // app.use(authMiddlewear);
 app.use(morgan('dev'));
 require('./routes/user-routes.js')(app);
 
-app.listen(PORT, () => console.log(`server is running on ${PORT}`));
+if(require.main === module) {
+  app.listen(PORT, () => console.log(`server is running on ${PORT}`));
+}
+
+module.exports = app;
