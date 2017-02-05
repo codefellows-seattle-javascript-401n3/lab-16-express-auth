@@ -1,6 +1,6 @@
 'use strict';
 let User = require('../model/user');
-let authMiddlewear = require('../lib/authentication');
+let authMiddlewear = require('../lib/basic-auth');
 let jsonParser = require('body-parser').json();
 // let createError = require('http-errors');
 
