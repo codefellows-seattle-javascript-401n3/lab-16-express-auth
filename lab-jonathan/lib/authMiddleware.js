@@ -1,4 +1,4 @@
-let User = require('../model/model');
+let User = require('../model/users');
 let createError = require('http-errors');
 
 
@@ -12,28 +12,20 @@ module.exports = (req, res, next) => {
 
   User.findOne({username: username})
   .then(user => {
-    let temp = user.hashPassword(password)
-    .then(temp => {
-      console.log('user.password', user.password);
-      console.log('temp', temp.password);
-      if(user.password == temp.password) {
-        console.log('password', password);
-        console.log('logged in');
-        next();
-      }
-      else{
-        console.log('in the else');
-        console.log('user', user);
-        console.log('user.password', user.password);
-        res.json({msg: 'wrong password'});
-      }
-    });
+    if (!user){
+      return next(createError(404, 'user not found'));
+    }
+    // if(req.params.id == user._id) {
+    // }
+    return user.comparePasswords(password);
+    // return Promise.reject(createError(401, 'Not authorized'));
   })
-  .catch(console.log('error. could not find the user'));
+  .then(user => {
+    req.user = user;
+    next();
+  })
+  .catch(err => {
+    console.log(err)
+    next(createError(401, 'Not Authorized'))
+  });
 };
-
-
-
-
-
-// curl -u charlie:password1234 -X POST http://localhost/9000/login   the -u automatically does the encoding for you.

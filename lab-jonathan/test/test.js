@@ -1,47 +1,33 @@
 let request = require('superagent');
 let expect = require('chai').expect;
 require('../index.js');
+let User = require('../model/users');
+
 
 
 describe('testing user rotues', function(){
-  // let owner = null
-  // before((done) => {
-  //   console.log('waiting');
-  //   setTimeout(() => {}, 10000);
-  //   request.post('localhost:9000/owners')
-  //      .send({name: 'OWNER NAME', style: 'OWNER STYLE', guitar: 'OWNER GUITAR'})
-  //      .end((err, res) => {
-  //        owner = res.body;
-  //        done();
-  //      });
-  // });
-  it('should return 404 for an unregistered route', function(done) {
-    request.get('http://localhost:9000/stuff')
-    .end((err, res) => {
-      console.log(err);
-      console.log(res);
-      expect(res.status).to.equal(404);
+  let user;
+  let token;
+
+  before(function(done) {
+    console.log('something happening');
+    let tmp = new User({username: 'usertestafa', password: 'testpass'});
+    tmp.save()
+    .then(u => {
+      user = u;
+      token = u.generateToken();
+      console.log(token);
+      console.log('token created');
       done();
     });
   });
 
 
-// test POST errors/messages
-  describe('testing POST /users for response 200', function(){
-    it('should return a user', function(done){
-      request.post('localhost:9000/users')
-      .send({username: 'USERNAME'})
-      .end((err, res) => {
-        if (err) return done(err);
-        expect(res.status).to.equal(200);
-        expect(res.body.username).to.equal('USERNAME');
-        done();
-      });
-    });
-  //
-    it('should responds with "bad request" for if no body provided or invalid body provided', function(done){
-      request.post('localhost:9000/users')
-      .send({username: 'USERNAME'})
+
+//Unregistered route
+  describe('testing unregistered route', function(){
+    it('should return 404 for an unregistered route', function(done) {
+      request.get('http://localhost:3000/stuff')
       .end((err, res) => {
         expect(res.status).to.equal(404);
         done();
@@ -50,53 +36,75 @@ describe('testing user rotues', function(){
   });
 
 
+
+// test POST errors/messages
+  describe('testing POST /users for response 200', function(){
+    it('posts a user and gives a 200', function(){
+      request.post('localhost:3000/users')
+      .auth('Bearer', token, {type:'auto'})
+      .send({make: 'usertestafa', model:'testpass'})
+      .end((err, res) => {
+        console.log('body', res.body);
+        user = res.body;
+        console.log('user', user);
+        expect(res.status).to.equal(200);
+        // done();
+      });
+    });
+    it('should respond with a 401 error for if no token was provided', function(){
+      request.post('localhost:3000/users')
+      .auth('Bearer', '', {type:'auto'})
+      .send({make: 'usertestafa', model:'testpass'})
+      .end((err, res) => {
+        expect(res.status).to.equal(401);
+        // done();
+      });
+    });
+    it('should return a 400 error if no body is provided', function(){
+      request.post('localhost:3000/users')
+      .end((err, res) => {
+        expect(res.status).to.equal(400);
+      });
+    });
+  });
+
+
 // testing GET errors/messages
-  // describe('testing GET /suers respones', function(){
-  //   it('provided an id it should return a user', function(done){
-  //     request.get(`localhost:9000/users/${user.id}`)
-  //     .end((err, res) => {
-  //       if (err) return done(err);
-  //       expect(res.status).to.equal(200);
-  //       expect(res.body.username).to.equal('USERNAME');
-  //       expect(res.body.password).to.equal('OWNER STYLE');
-  //       owner = res.body;
-  //       done();
-  //     });
-  //   });
-  //
-  //   it('should return a 400 bad request error if no id was provided', function(done){
-  //     request.get('localhost:9000/owners/')
-  //     .end((err, res) => {
-  //       expect(res.status).to.equal(400);
-  //       done();
-  //     });
-  //   });
-  //
-  //   it('should return a 404 error if the id was not found' , function(done){
-  //     request.get('localhost:9000/owners/lemmy')
-  //     .end((err, res) => {
-  //       expect(res.status).to.equal(404);
-  //       // expect(res.text).to.equal('Not Found');
-  //       done();
-  //     });
-  //   });
-  //
-  //
-  // });
+  describe('testing GET /users respones', function(){
+    it('provided an id it should return a user but not the password', function(){
+      request.get('localhost:3000/users')
+      .auth('Bearer', token, {type:'auto'})
+      .send({make: 'usertestafa', model:'testpass'})
+      .end((err, res) => {
+        if (err) return (err);
+        expect(res.status).to.equal(200);
+        expect(res.body.username).to.equal('usertestafa');
+        expect(res.body).to.not.have.property('password');
+      });
+    });
+    it('should return a 401 error if a token was not provided', function(){
+      request.get('localhost:3000/users')
+      .auth('Bearer', '', {type:'auto'})
+      .send({make: 'usertestafa', model:'testpass'})
+      .end((err, res) => {
+        expect(res.status).to.equal(401);
+        // done();
+      });
+    });
+    it('should return a 404 error if the id provided was not found', function(){
+      request.get('localhost:3000/users')
+      .auth('Bearer', 'badToken', {type: 'auto'})
+      .send({make: 'usertestafa', model:'testpass'})
+      .end((err, res) =>{
+        expect(res.status).to.equal(404);
+      });
+    });
+  });
+
+  after(function(done) {
+    User.remove({_id:user._id}).exec();
+    done();
+  });
 
 //end of file
 });
-
-
-
-
-
-
-
-
-
-
-//delete tests
-//DELETE - test 404, for a DELETE request with an invalid or missing id
-// 404 for missing id because DELETE /api/<simple-resource-name>/ is not a route
-// DELETE - test 204, with an empty response body for DELETE request with a valid id
