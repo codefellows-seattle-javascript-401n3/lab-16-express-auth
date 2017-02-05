@@ -110,7 +110,7 @@ describe('our server', function() {
             .end((err, res) => {
               expect(res.status).to.equal(401);
               expect(res.text).to.equal('wrong password');
-              done();
+              done(); //Gimme thems second bonus point!
             });
           });
       });

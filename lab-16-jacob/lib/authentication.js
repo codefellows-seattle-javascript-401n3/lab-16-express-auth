@@ -3,6 +3,7 @@
 let User = require('../model/user'); //basic auth middleware
 
 module.exports = (req, res, next) => {
+  // let headers = req.headers;
   let auth = req.headers.authorization;
   if(!auth) {
     res.status(400).end('needs auth');
@@ -13,7 +14,7 @@ module.exports = (req, res, next) => {
     .then(user => {
       return user.comparePasswordHash(password)
       .then((user) => {
-        req.user = user;
+        req.user = user; //this will give the req.user property to the object that is returned from this middleware
         next();
       })
       .catch(function() {
@@ -27,6 +28,3 @@ module.exports = (req, res, next) => {
       }
     });
 };
-
-
-//

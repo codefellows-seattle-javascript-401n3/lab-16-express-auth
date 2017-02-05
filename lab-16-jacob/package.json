@@ -14,10 +14,12 @@
     "body-parser": "^1.15.2",
     "express": "^4.14.0",
     "http-errors": "^1.5.1",
+    "jsonwebtoken": "^7.2.1",
     "mongoose": "^4.7.5"
   },
   "devDependencies": {
     "chai": "^3.5.0",
+    "debug": "^2.6.0",
     "gulp": "^3.9.1",
     "gulp-eslint": "^3.0.1",
     "gulp-mocha": "^3.0.1",

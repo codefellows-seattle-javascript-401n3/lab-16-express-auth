@@ -1,31 +1,53 @@
 'use strict';
 
-let authMiddleWare = require('../lib/authentication');
+let bearerAuth = require('../lib/bearer-auth');
+// let authMiddleWare = require('../lib/authentication');
 let User = require('../model/user');
 let jsonParser = require('body-parser').json();
 
 
 module.exports = (router) => {
-  router.post('/users', jsonParser, (req, res) => {
+  router.post('/signup', jsonParser, (req, res) => {
     let user = new User(req.body);
     user.hashPassword(user.password)
-    .then(user => {
-      user.save(); //saves with hashed password into DB
-      res.json({username: user.username, id: user._id});
-    })
+    .then(user => user.save())
+    .then(user => user.generateToken())
+    .then(token => res.json(token))
     .catch(() => {
       res.status(401).end('invalid body');
     });
   });
-  router.get('/users/:id', authMiddleWare,  (req, res) => {
-    User.findById(req.params.id)
+  router.get('/users', bearerAuth,  (req, res) => { //because of authMiddleWare being called, we will have the req.user property!
+    User.findById(req.user._id)
     .then((user) => {
-      res.send(`${user.username} is logged in`);
+      res.json(user);
     })
-    .catch(() => res.status(404).end('not found'));
+    .catch(function(err) {
+      if(err) {
+        res.status(404).end('user not found');
+      }
+    });
   });
-  router.delete('/users/:id', authMiddleWare, (req, res) => {
-    User.findById(req.params.id)
+  router.put('/users/', bearerAuth, jsonParser, (req, res) => {
+    User.findById(req.user._id)
+    .then(function(user) {
+      user.update((req.body), function(err) {
+        if (err) {
+          res.status(400).end('bad request');
+        } else {
+          res.status(200).json(user);
+        }
+      });
+    })
+    .catch(function(err) {
+      if(err) {
+        console.log(err);
+        res.status(404).end('not found');
+      }
+    });
+  });
+  router.delete('/users', bearerAuth, (req, res) => {
+    User.findById(req.user._id)
     .then((user) => {
       user.remove({_id: user._id}, function(err) {
         if(err) {
