@@ -8,10 +8,12 @@ const Promise = require('bluebird');
 const mongoose = require('mongoose');
 
 const authRouter = require('./route/auth-route.js');
+const galleryRouter = require('./route/pet-route.js');
 const errorMiddleware = require('./lib/error-middleware.js');
 
 dotenv.load();
 
+mongoose.Promise = Promise;
 mongoose.connect(process.env.MONGODB_URI);
 
 const PORT = process.env.PORT;
@@ -21,6 +23,7 @@ app.use(cors());
 app.use(morgan('dev'));
 
 app.use(authRouter);
+app.use(galleryRouter);
 app.use(errorMiddleware);
 
 const server = module.exports = app.listen(PORT , () => {
@@ -28,3 +31,4 @@ const server = module.exports = app.listen(PORT , () => {
 });
 
 server.isRunning = true;
+  
