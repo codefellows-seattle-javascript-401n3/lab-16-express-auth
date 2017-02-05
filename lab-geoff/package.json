@@ -10,7 +10,10 @@
     "bcrypt": "^1.0.2",
     "body-parser": "^1.15.2",
     "express": "^4.14.0",
-    "mongoose": "^4.7.5"
+    "http-errors": "^1.5.1",
+    "jsonwebtoken": "^7.2.1",
+    "mongoose": "^4.7.5",
+    "superagent-auth-bearer": "0.0.1"
   },
   "devDependencies": {
     "chai": "^3.5.0",
