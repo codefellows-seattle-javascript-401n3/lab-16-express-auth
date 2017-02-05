@@ -5,11 +5,11 @@ let request = require('superagent')
 let mongoose = require('mongoose')
 
 let User = require('../model/user')
-let url = 'http://localhost:3000/api'
+let url = 'http://localhost:3000'
 
 let testUser = {
-  username: 'kyle',
-  password: 'pass1234'
+  username: 'test',
+  password: 'testPass'
 }
 
 describe('a user module', function() {
@@ -30,15 +30,13 @@ describe('a user module', function() {
     })
   })
 
-  describe('GET', function() {
-
-    describe('/api/cars/id', function() {
+  describe('USER routes', function() {
+    describe('GET', function() {
 
       before(done => {
         request.post(`${url}/users`)
           .send(testUser)
           .then(user => {
-            console.log(user)
             this.testUser = user
             done()
           })
@@ -50,13 +48,15 @@ describe('a user module', function() {
         .catch(done)
       })
 
-      it('can fetch a user if authenticated')
-      request.get(`${url}/users/${this.testUser._id}`)
-        .auth(this.testUser.username, this.testUser.password)
-        .end((err, res) => {
-          expect(res.status).to.equal(200)
-          expect(res.body.username).to.equal(this.testUser.username)
-        })
+      it('can fetch a user if authenticated', done => {
+        request.get(`${url}/users/${this.testUser._id}`)
+          .auth(this.testUser.username, this.testUser.password)
+          .end((err, res) => {
+            expect(res.status).to.equal(200)
+            expect(res.body.username).to.equal(this.testUser.username)
+            done()
+          })
+      })
     })
   })
 })
