@@ -1,14 +1,17 @@
 'use strict';
 
 const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const createError = require('http-errors');
+const jwt = require('jsonwebtoken');
 const Schema = mongoose.Schema;
 
+const Course = require('./course.js');
 const userSchema = Schema({
   username: {type: String, required: true, unique: true},
   email: {type: String, require: true, unique: true},
   password: {type: String, required: true},
+  courses: [{type: Schema.Types.ObjectId, ref: 'course'}]
 });
 
 userSchema.methods.hashPassword = function(password) {
@@ -31,4 +34,19 @@ userSchema.methods.comparePasswords = function(plainTextPass) {
   });
 };
 
-module.exports = mongoose.model('user', userSchema);
+userSchema.methods.generateToken = function() {
+  return Promise.resolve(jwt.sign({id: this._id}, process.env.SECRET || 'DEV'));
+};
+
+const User = module.exports = mongoose.model('user', userSchema);
+
+User.findByIdAndAddCourse = function(user, course) {
+
+  return new Course(course).save()
+    .then(course => {
+      this.tempCourse = course;
+      user.courses.push(course._id);
+      return user.save();
+    })
+    .then(() => this.tempCourse);
+};
