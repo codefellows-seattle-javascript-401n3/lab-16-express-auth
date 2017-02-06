@@ -1,0 +1,31 @@
+{
+  "name": "lab-kyle",
+  "version": "1.0.0",
+  "description": "Lab-16 express-authorization",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "express",
+    "authorization"
+  ],
+  "author": "Kyle Winckler",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^1.0.2",
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "http-errors": "^1.5.1",
+    "jsonwebtoken": "^7.2.1",
+    "mongoose": "^4.7.5"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "morgan": "^1.7.0",
+    "superagent": "^3.3.1"
+  }
+}

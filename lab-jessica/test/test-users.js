@@ -62,5 +62,4 @@ describe('testing user routes', function() {
     });
 
   });
-
 });

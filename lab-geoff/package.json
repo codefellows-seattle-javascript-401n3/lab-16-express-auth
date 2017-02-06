@@ -1,0 +1,29 @@
+{
+  "name": "lab16_geoff",
+  "version": "1.0.0",
+  "description": "lab 15 assignment express authorization",
+  "main": "server.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "bcrypt": "^1.0.2",
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "http-errors": "^1.5.1",
+    "jsonwebtoken": "^7.2.1",
+    "mongoose": "^4.7.5",
+    "superagent-auth-bearer": "0.0.1"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^3.2.0",
+    "superagent": "^3.3.1"
+  },
+  "scripts": {
+    "test": "mocha",
+    "start": "node server.js"
+  },
+  "author": "geoff cox",
+  "license": "ISC"
+}
